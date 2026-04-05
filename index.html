@@ -46,6 +46,7 @@
   .form-input:focus { outline: none; background: #eeeeee; }
   .form-input::placeholder { color: #bbb; }
   textarea.form-input { resize: none; min-height: 52px; line-height: 1.5; }
+  .hint { font-size: 12px; color: #aaa; margin-top: 6px; padding-left: 2px; }
 
   .form-group { margin-bottom: 16px; }
   .form-row { display: flex; gap: 12px; }
@@ -207,11 +208,13 @@
   <div class="card">
     <div class="form-group">
       <label class="form-label">남자 참가자</label>
-      <textarea class="form-input" id="maleNames" placeholder="홍길동, 김철수, 박영수 ...">홍길동, 김철수, 박영수, 이민호, 정우성, 송중기</textarea>
+      <textarea class="form-input" id="maleNames" placeholder="홍길동, *김철수, 박영수 ...">홍길동, 김철수, 박영수, 이민호, 정우성, 송중기</textarea>
+      <div class="hint">쉼표(,)로 구분 · 이름 앞에 *를 붙이면 첫 게임 우선 배정</div>
     </div>
     <div class="form-group">
       <label class="form-label">여자 참가자</label>
-      <textarea class="form-input" id="femaleNames" placeholder="김영희, 이수진, 박지연 ...">김영희, 이수진, 박지연, 최유리, 한소희, 정소민</textarea>
+      <textarea class="form-input" id="femaleNames" placeholder="김영희, *이수진, 박지연 ...">김영희, 이수진, 박지연, 최유리, 한소희, 정소민</textarea>
+      <div class="hint">쉼표(,)로 구분 · 이름 앞에 *를 붙이면 첫 게임 우선 배정</div>
     </div>
     <div class="form-row">
       <div class="form-group">
@@ -247,10 +250,16 @@ function generateGames() {
   errorEl.style.display = 'none';
   resultsEl.innerHTML = '';
 
-  const males = document.getElementById('maleNames').value.split(',').map(s => s.trim()).filter(Boolean);
-  const females = document.getElementById('femaleNames').value.split(',').map(s => s.trim()).filter(Boolean);
+  const maleRaw = document.getElementById('maleNames').value.split(',').map(s => s.trim()).filter(Boolean);
+  const femaleRaw = document.getElementById('femaleNames').value.split(',').map(s => s.trim()).filter(Boolean);
   const courts = parseInt(document.getElementById('courtCount').value);
   const games = parseInt(document.getElementById('gameCount').value);
+
+  // Parse priority (*이름 → 첫 게임 우선 배정)
+  const priorityNames = new Set();
+  const males = maleRaw.map(n => { if (n.startsWith('*')) { const name = n.slice(1); priorityNames.add(name); return name; } return n; });
+  const females = femaleRaw.map(n => { if (n.startsWith('*')) { const name = n.slice(1); priorityNames.add(name); return name; } return n; });
+
   const totalPlayers = males.length + females.length;
   const playersPerRound = courts * 4;
 
@@ -303,9 +312,13 @@ function generateGames() {
   // Pick rest candidates for a given gender group and count
   function pickRestCandidates(group, count, roundIdx) {
     if (count <= 0) return [];
-    const canRest = group.filter(p => lastRested[p.name] !== roundIdx - 1)
+    // Round 0 (game 1): priority players must not rest
+    const eligible = roundIdx === 0
+      ? group.filter(p => !priorityNames.has(p.name))
+      : group;
+    const canRest = eligible.filter(p => lastRested[p.name] !== roundIdx - 1)
       .sort((a, b) => restCount[a.name] - restCount[b.name]);
-    const mustPlay = group.filter(p => lastRested[p.name] === roundIdx - 1)
+    const mustPlay = eligible.filter(p => lastRested[p.name] === roundIdx - 1)
       .sort((a, b) => restCount[a.name] - restCount[b.name]);
     const picked = [];
     for (const p of canRest) { if (picked.length >= count) break; picked.push(p); }
