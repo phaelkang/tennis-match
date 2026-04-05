@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>테니스 게임 매칭</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Wanted Sans Variable", "Wanted Sans", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    background: #f5f5f5; color: #1a1a1a; min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+
+  /* Header */
+  .header {
+    padding: 24px 0 8px;
+    text-align: left;
+  }
+  .header-sub { font-size: 14px; font-weight: 500; color: #888; margin-bottom: 4px; }
+  .header h1 {
+    font-size: 32px; font-weight: 800; color: #1a1a1a;
+    line-height: 1.25; letter-spacing: -0.5px;
+  }
+
+  /* Cards */
+  .card {
+    background: #fff; border-radius: 20px; padding: 24px;
+    margin-bottom: 12px;
+  }
+
+  /* Form */
+  .form-label {
+    font-size: 13px; font-weight: 600; color: #999;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px; display: block;
+  }
+  .form-input {
+    width: 100%; padding: 14px 16px; border: none;
+    background: #f5f5f5; border-radius: 14px;
+    font-size: 15px; font-family: inherit; color: #1a1a1a;
+    transition: background 0.2s;
+  }
+  .form-input:focus { outline: none; background: #eeeeee; }
+  .form-input::placeholder { color: #bbb; }
+  textarea.form-input { resize: none; min-height: 52px; line-height: 1.5; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-row { display: flex; gap: 12px; }
+  .form-row .form-group { flex: 1; }
+
+  .btn {
+    display: block; width: 100%; padding: 16px;
+    background: #1a1a1a; color: #fff;
+    border: none; border-radius: 16px;
+    font-size: 16px; font-weight: 700; font-family: inherit;
+    cursor: pointer; transition: transform 0.1s, opacity 0.2s;
+    letter-spacing: -0.3px;
+  }
+  .btn:active { transform: scale(0.98); opacity: 0.9; }
+
+  .error-msg {
+    background: #fff0f0; color: #e74c3c; padding: 12px 16px;
+    border-radius: 14px; margin-bottom: 12px; display: none;
+    font-size: 14px; font-weight: 500;
+  }
+
+  /* Results */
+  .results { display: flex; flex-direction: column; gap: 12px; }
+
+  .game-card {
+    border-radius: 20px; overflow: hidden;
+    padding: 20px 20px 16px;
+  }
+  .game-card:nth-child(3n+1) { background: #fff; }
+  .game-card:nth-child(3n+2) { background: #fef9e7; }
+  .game-card:nth-child(3n+3) { background: #e8faf5; }
+
+  .game-title {
+    font-size: 22px; font-weight: 800; color: #1a1a1a;
+    margin-bottom: 16px; letter-spacing: -0.5px;
+  }
+
+  .court-block { margin-bottom: 14px; }
+  .court-block:last-child { margin-bottom: 0; }
+
+  .court-type-badge {
+    display: inline-block; padding: 5px 12px;
+    border-radius: 10px; font-size: 12px; font-weight: 700;
+    margin-bottom: 8px; letter-spacing: -0.2px;
+  }
+  .court-type-badge.mens { background: #dbeafe; color: #1e40af; }
+  .court-type-badge.womens { background: #fce7f3; color: #9d174d; }
+  .court-type-badge.mixed { background: #ede9fe; color: #5b21b6; }
+  .court-type-badge.rest { background: #f3f4f6; color: #6b7280; }
+
+  .player-list {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding-left: 2px;
+  }
+  .player-chip {
+    padding: 7px 14px; border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+  .player-chip.male { background: #f0f4ff; color: #1e3a8a; }
+  .player-chip.female { background: #fdf2f8; color: #831843; }
+  .player-chip.rest-male { background: #f9fafb; color: #9ca3af; }
+  .player-chip.rest-female { background: #f9fafb; color: #9ca3af; }
+
+  /* Summary */
+  .summary-card {
+    background: #fff; border-radius: 20px;
+    padding: 20px; margin-top: 4px;
+  }
+  .summary-title {
+    font-size: 18px; font-weight: 800; color: #1a1a1a;
+    margin-bottom: 16px; letter-spacing: -0.3px;
+  }
+  .stat-table { width: 100%; border-collapse: collapse; }
+  .stat-table th {
+    font-size: 12px; font-weight: 600; color: #999;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 8px 8px; text-align: center;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  .stat-table td {
+    padding: 10px 8px; text-align: center;
+    font-size: 14px; font-weight: 500; color: #333;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .stat-table td:first-child { text-align: left; font-weight: 600; }
+  .stat-table tr:last-child td { border-bottom: none; }
+  .stat-table .gender-m { color: #3b82f6; }
+  .stat-table .gender-f { color: #ec4899; }
+
+  .stat-pill {
+    display: inline-block; min-width: 28px;
+    padding: 3px 8px; border-radius: 8px;
+    font-size: 13px; font-weight: 700; text-align: center;
+  }
+  .stat-pill.play { background: #ecfdf5; color: #059669; }
+  .stat-pill.rest-stat { background: #fef3c7; color: #d97706; }
+
+  /* Divider */
+  .section-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 24px 0 16px; padding: 0 4px;
+  }
+  .section-divider span {
+    font-size: 13px; font-weight: 600; color: #bbb;
+    text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;
+  }
+  .section-divider::before, .section-divider::after {
+    content: ''; flex: 1; height: 1px; background: #e5e5e5;
+  }
+
+  /* Action bar */
+  .action-bar {
+    display: none; gap: 8px; margin-bottom: 12px;
+  }
+  .action-bar.visible { display: flex; }
+  .btn-action {
+    display: flex; align-items: center; gap: 6px; flex: 1;
+    justify-content: center;
+    padding: 10px 16px; background: #fff; color: #1a1a1a;
+    border: none; border-radius: 14px;
+    font-size: 14px; font-weight: 600; font-family: inherit;
+    cursor: pointer; transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    letter-spacing: -0.2px;
+  }
+  .btn-action:active { transform: scale(0.96); }
+  .btn-action svg { width: 16px; height: 16px; }
+  .btn-action.copied { background: #059669; color: #fff; }
+
+  /* Text result */
+  .text-result {
+    background: #fff; border-radius: 20px; padding: 20px;
+    margin-bottom: 12px;
+    white-space: pre-wrap; font-size: 14px; line-height: 1.8;
+    font-family: inherit; color: #1a1a1a;
+    letter-spacing: -0.2px;
+  }
+  .text-result .game-block { margin-bottom: 16px; }
+  .text-result .game-block:last-child { margin-bottom: 0; }
+  .text-result .game-label {
+    font-size: 17px; font-weight: 800; margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+  .text-result .court-line {
+    font-size: 14px; font-weight: 500; color: #333;
+    padding-left: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-sub">Match Maker</div>
+    <h1>테니스 게임 매칭</h1>
+  </div>
+
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label">남자 참가자</label>
+      <textarea class="form-input" id="maleNames" placeholder="홍길동, 김철수, 박영수 ...">홍길동, 김철수, 박영수, 이민호, 정우성, 송중기</textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">여자 참가자</label>
+      <textarea class="form-input" id="femaleNames" placeholder="김영희, 이수진, 박지연 ...">김영희, 이수진, 박지연, 최유리, 한소희, 정소민</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">코트 수</label>
+        <input class="form-input" type="number" id="courtCount" value="2" min="1" max="10">
+      </div>
+      <div class="form-group">
+        <label class="form-label">게임 수</label>
+        <input class="form-input" type="number" id="gameCount" value="6" min="1" max="50">
+      </div>
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
+    <button class="btn" onclick="generateGames()">게임 생성</button>
+  </div>
+
+  <div class="action-bar" id="actionBar">
+    <button class="btn-action" onclick="refreshGames()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+      다시 섞기
+    </button>
+    <button class="btn-action" id="copyBtn" onclick="copyResult()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      복사하기
+    </button>
+  </div>
+  <div id="results"></div>
+</div>
+
+<script>
+function generateGames() {
+  const errorEl = document.getElementById('errorMsg');
+  const resultsEl = document.getElementById('results');
+  errorEl.style.display = 'none';
+  resultsEl.innerHTML = '';
+
+  const males = document.getElementById('maleNames').value.split(',').map(s => s.trim()).filter(Boolean);
+  const females = document.getElementById('femaleNames').value.split(',').map(s => s.trim()).filter(Boolean);
+  const courts = parseInt(document.getElementById('courtCount').value);
+  const games = parseInt(document.getElementById('gameCount').value);
+  const totalPlayers = males.length + females.length;
+  const playersPerRound = courts * 4;
+
+  if (males.length < 2) return showError('남자 참가자를 최소 2명 이상 입력하세요.');
+  if (females.length < 2) return showError('여자 참가자를 최소 2명 이상 입력하세요.');
+  if (totalPlayers < playersPerRound) return showError(`코트 ${courts}개에 최소 ${playersPerRound}명이 필요합니다. (현재 ${totalPlayers}명)`);
+  if (courts < 1 || games < 1) return showError('코트 개수와 게임 수는 1 이상이어야 합니다.');
+
+  const allPlayers = [
+    ...males.map(n => ({ name: n, gender: 'M' })),
+    ...females.map(n => ({ name: n, gender: 'F' })),
+  ];
+
+  const restCount = {};
+  const playCount = {};
+  const pairCount = {};
+  const lastRested = {};
+  const typeUsed = { mens: 0, womens: 0, mixed: 0 };
+  const malePlayers = allPlayers.filter(p => p.gender === 'M');
+  const femalePlayers = allPlayers.filter(p => p.gender === 'F');
+
+  allPlayers.forEach(p => {
+    restCount[p.name] = 0;
+    playCount[p.name] = 0;
+    lastRested[p.name] = -999;
+  });
+
+  function getPairKey(a, b) { return [a, b].sort().join('|'); }
+  function getPairScore(names) {
+    let score = 0;
+    for (let i = 0; i < names.length; i++)
+      for (let j = i + 1; j < names.length; j++)
+        score += (pairCount[getPairKey(names[i], names[j])] || 0);
+    return score;
+  }
+
+  // Generate all possible game type combos for N courts
+  function allTypeCombos(n) {
+    const types = ['mens', 'womens', 'mixed'];
+    if (n === 0) return [[]];
+    const sub = allTypeCombos(n - 1);
+    const result = [];
+    for (const t of types)
+      for (const s of sub)
+        result.push([t, ...s]);
+    return result;
+  }
+  const combos = allTypeCombos(courts);
+
+  // Pick rest candidates for a given gender group and count
+  function pickRestCandidates(group, count, roundIdx) {
+    if (count <= 0) return [];
+    const canRest = group.filter(p => lastRested[p.name] !== roundIdx - 1)
+      .sort((a, b) => restCount[a.name] - restCount[b.name]);
+    const mustPlay = group.filter(p => lastRested[p.name] === roundIdx - 1)
+      .sort((a, b) => restCount[a.name] - restCount[b.name]);
+    const picked = [];
+    for (const p of canRest) { if (picked.length >= count) break; picked.push(p); }
+    for (const p of mustPlay) { if (picked.length >= count) break; picked.push(p); }
+    return picked;
+  }
+
+  // Score a rest selection: lower = more balanced rest across ALL players
+  function restBalanceScore(mResting, fResting) {
+    // Simulate rest counts after this round
+    const simRest = {};
+    allPlayers.forEach(p => simRest[p.name] = restCount[p.name]);
+    mResting.forEach(p => simRest[p.name]++);
+    fResting.forEach(p => simRest[p.name]++);
+    const vals = Object.values(simRest);
+    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+    return vals.reduce((sum, v) => sum + (v - mean) ** 2, 0);
+  }
+
+  function pickDiverseGroup(pool, count) {
+    if (pool.length <= count) return [...pool];
+    let bestGroup = pool.slice(0, count);
+    let bestScore = getPairScore(bestGroup.map(p => p.name));
+    const maxAttempts = Math.min(40, pool.length * 4);
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      shuffled.sort((a, b) => playCount[a.name] - playCount[b.name] + (Math.random() - 0.5) * 0.5);
+      const group = shuffled.slice(0, count);
+      const score = getPairScore(group.map(p => p.name));
+      if (score < bestScore) { bestScore = score; bestGroup = group; }
+    }
+    return bestGroup;
+  }
+
+  const schedule = [];
+
+  for (let g = 0; g < games; g++) {
+    const restNeeded = totalPlayers - playersPerRound;
+
+    // 1) Find best game type combo that maximizes rest balance
+    let bestCombo = null;
+    let bestScore = Infinity;
+    let bestMRest = [], bestFRest = [];
+
+    for (const combo of combos) {
+      let mNeeded = 0, fNeeded = 0;
+      for (const t of combo) {
+        if (t === 'mens') mNeeded += 4;
+        else if (t === 'womens') fNeeded += 4;
+        else { mNeeded += 2; fNeeded += 2; }
+      }
+      // Feasibility: enough players of each gender
+      if (mNeeded > malePlayers.length || fNeeded > femalePlayers.length) continue;
+
+      const mRestCount = malePlayers.length - mNeeded;
+      const fRestCount = femalePlayers.length - fNeeded;
+      if (mRestCount < 0 || fRestCount < 0) continue;
+      if (mRestCount + fRestCount !== restNeeded) continue;
+
+      // Pick who would rest with this combo
+      const mRest = pickRestCandidates(malePlayers, mRestCount, g);
+      const fRest = pickRestCandidates(femalePlayers, fRestCount, g);
+
+      // Check consecutive rest constraint
+      const consecutiveRests = [...mRest, ...fRest].filter(p => lastRested[p.name] === g - 1).length;
+
+      // Score: rest balance (primary) + game type variety (secondary) + consecutive penalty
+      let score = restBalanceScore(mRest, fRest);
+      // Bonus for game type variety: prefer less-used types
+      const comboTypeCount = { mens: 0, womens: 0, mixed: 0 };
+      combo.forEach(t => comboTypeCount[t]++);
+      for (const t of ['mens', 'womens', 'mixed']) {
+        score += (typeUsed[t] + comboTypeCount[t]) * 0.01;
+      }
+      // Heavy penalty for consecutive rest
+      score += consecutiveRests * 100;
+
+      if (score < bestScore) {
+        bestScore = score;
+        bestCombo = combo;
+        bestMRest = mRest;
+        bestFRest = fRest;
+      }
+    }
+
+    // Fallback if no combo found (shouldn't happen)
+    if (!bestCombo) {
+      bestCombo = Array(courts).fill('mixed');
+      bestMRest = [];
+      bestFRest = [];
+    }
+
+    const resting = [...bestMRest, ...bestFRest];
+    const restingNames = new Set(resting.map(r => r.name));
+    const playingMales = malePlayers.filter(p => !restingNames.has(p.name));
+    const playingFemales = femalePlayers.filter(p => !restingNames.has(p.name));
+
+    // 2) Assign players to courts
+    const usedPlayers = new Set();
+    const courtAssignments = [];
+
+    // Sort courts: constrained types first (mens/womens before mixed)
+    const courtOrder = bestCombo.map((t, i) => ({ type: t, idx: i }))
+      .sort((a, b) => { const o = { mens: 0, womens: 1, mixed: 2 }; return o[a.type] - o[b.type]; });
+
+    for (const court of courtOrder) {
+      if (court.type === 'mixed') {
+        const mPool = playingMales.filter(p => !usedPlayers.has(p.name));
+        const fPool = playingFemales.filter(p => !usedPlayers.has(p.name));
+        const selected = pickDiverseGroup(mPool, 2).concat(pickDiverseGroup(fPool, 2));
+        selected.forEach(p => usedPlayers.add(p.name));
+        courtAssignments[court.idx] = { type: court.type, players: selected };
+      } else {
+        const pool = (court.type === 'mens' ? playingMales : playingFemales)
+          .filter(p => !usedPlayers.has(p.name));
+        const selected = pickDiverseGroup(pool, 4);
+        selected.forEach(p => usedPlayers.add(p.name));
+        courtAssignments[court.idx] = { type: court.type, players: selected };
+      }
+    }
+
+    // 3) Update stats
+    resting.forEach(r => { restCount[r.name]++; lastRested[r.name] = g; });
+    bestCombo.forEach(t => typeUsed[t]++);
+    courtAssignments.forEach(ca => {
+      ca.players.forEach(p => playCount[p.name]++);
+      const names = ca.players.map(p => p.name);
+      for (let i = 0; i < names.length; i++)
+        for (let j = i + 1; j < names.length; j++) {
+          const key = getPairKey(names[i], names[j]);
+          pairCount[key] = (pairCount[key] || 0) + 1;
+        }
+    });
+
+    schedule.push({ round: g + 1, courts: courtAssignments, resting });
+  }
+
+  // Build plain text
+  const typeLabels = { mens: '남자복식', womens: '여자복식', mixed: '혼성복식' };
+  const courtLetters = 'ABCDEFGHIJ';
+
+  let plainText = '';
+  for (const round of schedule) {
+    plainText += `<게임 ${round.round}>\n`;
+    round.courts.forEach((court, ci) => {
+      const names = court.players.map(p => p.name).join(', ');
+      plainText += `${courtLetters[ci]}코트 (${typeLabels[court.type]}): ${names}\n`;
+    });
+    if (round.resting.length > 0) {
+      plainText += `휴식: ${round.resting.map(r => r.name).join(', ')}\n`;
+    }
+    plainText += '\n';
+  }
+  window._lastResult = plainText.trim();
+
+  // Render as styled text
+  let html = '<div class="text-result">';
+  for (const round of schedule) {
+    html += `<div class="game-block">`;
+    html += `<div class="game-label">&lt;게임 ${round.round}&gt;</div>`;
+    round.courts.forEach((court, ci) => {
+      const names = court.players.map(p => p.name).join(', ');
+      html += `<div class="court-line">${courtLetters[ci]}코트 (${typeLabels[court.type]}): ${names}</div>`;
+    });
+    if (round.resting.length > 0) {
+      html += `<div class="court-line">휴식: ${round.resting.map(r => r.name).join(', ')}</div>`;
+    }
+    html += `</div>`;
+  }
+  html += '</div>';
+
+  // Summary
+  html += `<div class="summary-card"><div class="summary-title">참가자 통계</div>`;
+  html += `<table class="stat-table"><tr><th style="text-align:left">이름</th><th>성별</th><th>출전</th><th>휴식</th></tr>`;
+  allPlayers.forEach(p => {
+    html += `<tr><td>${p.name}</td>`;
+    html += `<td><span class="${p.gender === 'M' ? 'gender-m' : 'gender-f'}">${p.gender === 'M' ? '남' : '여'}</span></td>`;
+    html += `<td><span class="stat-pill play">${playCount[p.name]}</span></td>`;
+    html += `<td><span class="stat-pill rest-stat">${restCount[p.name]}</span></td></tr>`;
+  });
+  html += `</table></div>`;
+
+  resultsEl.innerHTML = html;
+
+  document.getElementById('actionBar').classList.add('visible');
+  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function refreshGames() {
+  generateGames();
+}
+
+function copyResult() {
+  if (!window._lastResult) return;
+  navigator.clipboard.writeText(window._lastResult).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 복사됨';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 복사하기';
+    }, 1500);
+  });
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+</script>
+</body>
+</html>
