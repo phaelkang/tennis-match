@@ -21,13 +21,13 @@
   }
   .header-sub { font-size: 14px; font-weight: 500; color: #888; margin-bottom: 4px; }
   .header h1 {
-    font-size: 32px; font-weight: 800; color: #1a1a1a;
+    font-size: 24px; font-weight: 800; color: #1a1a1a;
     line-height: 1.25; letter-spacing: -0.5px;
   }
 
   /* Cards */
   .card {
-    background: #fff; border-radius: 20px; padding: 24px;
+    background: #fff; border-radius: 20px; padding: 16px;
     margin-bottom: 12px;
   }
 
@@ -51,6 +51,31 @@
   .form-group { margin-bottom: 16px; }
   .form-row { display: flex; gap: 12px; }
   .form-row .form-group { flex: 1; }
+  .form-row-3 .form-group { flex: 1; min-width: 0; }
+
+  .toggle-wrap {
+    display: flex; position: relative;
+    background: #f5f5f5; border-radius: 12px;
+    padding: 3px; cursor: pointer; user-select: none;
+    height: 46px;
+  }
+  .toggle-option {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: #999;
+    position: relative; z-index: 1;
+    transition: color 0.2s; letter-spacing: -0.2px;
+  }
+  .toggle-option.active { color: #1a1a1a; }
+  .toggle-slider {
+    position: absolute; top: 3px; left: 3px;
+    width: calc(50% - 3px); height: calc(100% - 6px);
+    background: #fff; border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    transition: transform 0.25s ease;
+  }
+  .toggle-slider.right {
+    transform: translateX(100%);
+  }
 
   .btn {
     display: block; width: 100%; padding: 16px;
@@ -166,7 +191,7 @@
   .btn-action {
     display: flex; align-items: center; gap: 6px; flex: 1;
     justify-content: center;
-    padding: 10px 16px; background: #fff; color: #1a1a1a;
+    padding: 0 16px; height: 44px; background: #fff; color: #1a1a1a;
     border: none; border-radius: 14px;
     font-size: 14px; font-weight: 600; font-family: inherit;
     cursor: pointer; transition: transform 0.1s, box-shadow 0.2s;
@@ -215,7 +240,7 @@
       <textarea class="form-input" id="femaleNames" placeholder="김영희, *이수진, 박지연 ...">김영희, 이수진, 박지연, 최유리, 한소희, 정소민</textarea>
       <div class="hint">쉼표(,)로 구분 · 이름 앞에 *를 붙이면 첫 게임 우선 배정</div>
     </div>
-    <div class="form-row">
+    <div class="form-row form-row-3">
       <div class="form-group">
         <label class="form-label">코트 수</label>
         <input class="form-input" type="number" id="courtCount" value="2" min="1" max="10">
@@ -223,6 +248,15 @@
       <div class="form-group">
         <label class="form-label">게임 수</label>
         <input class="form-input" type="number" id="gameCount" value="6" min="1" max="50">
+      </div>
+      <div class="form-group">
+        <label class="form-label">시작 게임</label>
+        <div class="toggle-wrap" id="toggleWrap" onclick="toggleStartType()">
+          <div class="toggle-option active" id="optSingle">남/여복</div>
+          <div class="toggle-option" id="optMixed">혼복</div>
+          <div class="toggle-slider" id="toggleSlider"></div>
+        </div>
+        <input type="hidden" id="mixedStart" value="0">
       </div>
     </div>
     <div class="error-msg" id="errorMsg"></div>
@@ -253,6 +287,7 @@ function generateGames() {
   const femaleRaw = document.getElementById('femaleNames').value.split(',').map(s => s.trim()).filter(Boolean);
   const courts = parseInt(document.getElementById('courtCount').value);
   const games = parseInt(document.getElementById('gameCount').value);
+  const mixedStart = document.getElementById('mixedStart').value === '1';
 
   // Parse priority (*이름 → 첫 게임 우선 배정)
   const priorityNames = new Set();
@@ -308,6 +343,16 @@ function generateGames() {
   }
   const combos = allTypeCombos(courts);
 
+  // Fisher-Yates shuffle
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
   // Pick rest candidates for a given gender group and count
   function pickRestCandidates(group, count, roundIdx) {
     if (count <= 0) return [];
@@ -315,9 +360,10 @@ function generateGames() {
     const eligible = roundIdx === 0
       ? group.filter(p => !priorityNames.has(p.name))
       : group;
-    const canRest = eligible.filter(p => lastRested[p.name] !== roundIdx - 1)
+    // Shuffle first, then stable-sort by restCount so equal-rest players are randomized
+    const canRest = shuffle(eligible.filter(p => lastRested[p.name] !== roundIdx - 1))
       .sort((a, b) => restCount[a.name] - restCount[b.name]);
-    const mustPlay = eligible.filter(p => lastRested[p.name] === roundIdx - 1)
+    const mustPlay = shuffle(eligible.filter(p => lastRested[p.name] === roundIdx - 1))
       .sort((a, b) => restCount[a.name] - restCount[b.name]);
     const picked = [];
     for (const p of canRest) { if (picked.length >= count) break; picked.push(p); }
@@ -343,8 +389,8 @@ function generateGames() {
     let bestScore = getPairScore(bestGroup.map(p => p.name));
     const maxAttempts = Math.min(40, pool.length * 4);
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const shuffled = [...pool].sort(() => Math.random() - 0.5);
-      shuffled.sort((a, b) => playCount[a.name] - playCount[b.name] + (Math.random() - 0.5) * 0.5);
+      const shuffled = shuffle(pool);
+      shuffled.sort((a, b) => playCount[a.name] - playCount[b.name]);
       const group = shuffled.slice(0, count);
       const score = getPairScore(group.map(p => p.name));
       if (score < bestScore) { bestScore = score; bestGroup = group; }
@@ -362,7 +408,20 @@ function generateGames() {
     let bestScore = Infinity;
     let bestMRest = [], bestFRest = [];
 
-    for (const combo of combos) {
+    // First game: force combo based on mixedStart checkbox
+    let comboPool = combos;
+    if (g === 0) {
+      if (mixedStart) {
+        comboPool = [Array(courts).fill('mixed')];
+      } else {
+        // Force mens + womens (one each if 2 courts, alternate if more)
+        const forced = [];
+        for (let c = 0; c < courts; c++) forced.push(c % 2 === 0 ? 'mens' : 'womens');
+        comboPool = [forced];
+      }
+    }
+
+    for (const combo of comboPool) {
       let mNeeded = 0, fNeeded = 0;
       for (const t of combo) {
         if (t === 'mens') mNeeded += 4;
@@ -461,7 +520,7 @@ function generateGames() {
 
   let plainText = '';
   for (const round of schedule) {
-    plainText += `<게임 ${round.round}>\n`;
+    plainText += `게임 ${round.round}\n`;
     round.courts.forEach((court, ci) => {
       const names = court.players.map(p => p.name).join(', ');
       plainText += `${courtLetters[ci]}코트 (${typeLabels[court.type]}): ${names}\n`;
@@ -477,7 +536,7 @@ function generateGames() {
   let html = '<div class="text-result">';
   for (const round of schedule) {
     html += `<div class="game-block">`;
-    html += `<div class="game-label">&lt;게임 ${round.round}&gt;</div>`;
+    html += `<div class="game-label">게임 ${round.round}</div>`;
     round.courts.forEach((court, ci) => {
       const names = court.players.map(p => p.name).join(', ');
       html += `<div class="court-line">${courtLetters[ci]}코트 (${typeLabels[court.type]}): ${names}</div>`;
@@ -504,6 +563,24 @@ function generateGames() {
 
   document.getElementById('actionBar').classList.add('visible');
   resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleStartType() {
+  const input = document.getElementById('mixedStart');
+  const slider = document.getElementById('toggleSlider');
+  const optSingle = document.getElementById('optSingle');
+  const optMixed = document.getElementById('optMixed');
+  if (input.value === '0') {
+    input.value = '1';
+    slider.classList.add('right');
+    optSingle.classList.remove('active');
+    optMixed.classList.add('active');
+  } else {
+    input.value = '0';
+    slider.classList.remove('right');
+    optMixed.classList.remove('active');
+    optSingle.classList.add('active');
+  }
 }
 
 function refreshGames() {
