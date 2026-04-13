@@ -548,7 +548,7 @@
 </div>
 
 <div class="btn-fixed-wrap">
-  <button class="btn" id="mainBtn" onclick="handleMainBtn()">게임 생성</button>
+  <button class="btn" id="mainBtn" onclick="handleMainBtn()">매칭 생성</button>
 </div>
 
 <script>
@@ -1282,8 +1282,9 @@ function showResultView() {
   const inputSection = document.getElementById('inputSection');
   const resultSection = document.getElementById('resultSection');
   const btn = document.getElementById('mainBtn');
+  const container = document.querySelector('.container');
 
-  window.scrollTo({ top: 0 });
+  container.scrollTo({ top: 0 });
   inputSection.classList.remove('slide-in');
   inputSection.classList.add('slide-out');
 
@@ -1294,9 +1295,10 @@ function showResultView() {
     resultSection.style.display = 'block';
     resultSection.classList.remove('slide-out');
     resultSection.classList.add('slide-in');
+    container.scrollTo({ top: 0 });
   }, { once: true });
 
-  btn.textContent = '게임 설정 변경';
+  btn.textContent = '매칭 설정 변경';
   isResultView = true;
 }
 
@@ -1304,8 +1306,9 @@ function goBackToInput() {
   const inputSection = document.getElementById('inputSection');
   const resultSection = document.getElementById('resultSection');
   const btn = document.getElementById('mainBtn');
+  const container = document.querySelector('.container');
 
-  window.scrollTo({ top: 0 });
+  container.scrollTo({ top: 0 });
   resultSection.classList.remove('slide-in');
   resultSection.classList.add('slide-out');
 
@@ -1316,9 +1319,10 @@ function goBackToInput() {
     inputSection.style.display = 'block';
     inputSection.classList.remove('slide-out');
     inputSection.classList.add('slide-in');
+    container.scrollTo({ top: 0 });
   }, { once: true });
 
-  btn.textContent = '게임 생성';
+  btn.textContent = '매칭 생성';
   isResultView = false;
 }
 </script>
