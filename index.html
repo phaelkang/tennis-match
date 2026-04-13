@@ -28,7 +28,7 @@
   /* Section Title */
   .section-title {
     font-size: 16px; font-weight: 600; color: #e8e8e8;
-    padding: 16px 0 8px; letter-spacing: -0.5px;
+    padding: 16px 0 12px; letter-spacing: -0.5px;
   }
 
   /* Cards */
@@ -210,7 +210,7 @@
   /* Summary */
   .summary-card {
     background: #2C2C30; border-radius: 20px;
-    padding: 20px; margin-top: 4px;
+    padding: 20px;
   }
   .stat-group-label {
     font-size: 13px; font-weight: 600; color: #8E8E93;
@@ -456,7 +456,6 @@ function initDrag(tag) {
   tag.draggable = true;
   tag.addEventListener('dragstart', (e) => {
     dragTag = tag;
-    // Create rounded drag ghost
     const ghost = tag.cloneNode(true);
     ghost.style.cssText = `
       position: absolute; top: -9999px; left: -9999px;
@@ -476,6 +475,89 @@ function initDrag(tag) {
   tag.addEventListener('dragend', () => {
     tag.classList.remove('dragging');
     dragTag = null;
+  });
+
+  // Touch support
+  let touchTimeout = null;
+  let touchGhost = null;
+  tag.addEventListener('touchstart', (e) => {
+    if (e.target.closest('.tag-remove')) return;
+    touchTimeout = setTimeout(() => {
+      e.preventDefault();
+      dragTag = tag;
+      tag.classList.add('dragging');
+      const rect = tag.getBoundingClientRect();
+      touchGhost = tag.cloneNode(true);
+      touchGhost.classList.remove('dragging');
+      touchGhost.style.cssText = `
+        position: fixed; z-index: 9999; pointer-events: none;
+        border-radius: 999px; background: #48484a90;
+        padding: 8px 12px 8px 16px; font-size: 14px; font-weight: 500;
+        display: flex; align-items: center; gap: 8px;
+        color: #E5E5EA; font-family: inherit; opacity: 0.9;
+        left: ${rect.left}px; top: ${rect.top}px;
+        width: ${rect.width}px;
+      `;
+      document.body.appendChild(touchGhost);
+    }, 200);
+  }, { passive: false });
+
+  tag.addEventListener('touchmove', (e) => {
+    if (!dragTag || dragTag !== tag) {
+      clearTimeout(touchTimeout);
+      touchTimeout = null;
+      return;
+    }
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (touchGhost) {
+      touchGhost.style.left = (touch.clientX - touchGhost.offsetWidth / 2) + 'px';
+      touchGhost.style.top = (touch.clientY - touchGhost.offsetHeight / 2) + 'px';
+    }
+    if (isAnimating) return;
+    const now = Date.now();
+    if (now - lastSwapTime < 250) return;
+    const container = tag.closest('.tag-container');
+    const tags = [...container.querySelectorAll('.tag:not(.dragging)')];
+    let closest = null;
+    let closestDist = Infinity;
+    for (const t of tags) {
+      const rect = t.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(touch.clientX - cx, touch.clientY - cy);
+      if (dist < closestDist) { closestDist = dist; closest = t; }
+    }
+    if (!closest) return;
+    const allTags = [...container.querySelectorAll('.tag')];
+    const dragIdx = allTags.indexOf(dragTag);
+    const hoverIdx = allTags.indexOf(closest);
+    if (dragIdx === hoverIdx) return;
+    const rect = closest.getBoundingClientRect();
+    const midX = rect.left + rect.width / 2;
+    if (dragIdx < hoverIdx && touch.clientX < midX) return;
+    if (dragIdx > hoverIdx && touch.clientX > midX) return;
+    lastSwapTime = now;
+    const play = flipAnimate(container, dragTag);
+    if (dragIdx < hoverIdx) {
+      closest.after(dragTag);
+    } else {
+      closest.before(dragTag);
+    }
+    play();
+  }, { passive: false });
+
+  tag.addEventListener('touchend', () => {
+    clearTimeout(touchTimeout);
+    touchTimeout = null;
+    if (dragTag === tag) {
+      tag.classList.remove('dragging');
+      dragTag = null;
+    }
+    if (touchGhost) {
+      touchGhost.remove();
+      touchGhost = null;
+    }
   });
 }
 
@@ -708,16 +790,38 @@ function generateGames() {
       // Check consecutive rest constraint
       const consecutiveRests = [...mRest, ...fRest].filter(p => lastRested[p.name] === g - 1).length;
 
-      // Score: rest balance (primary) + game type variety (secondary) + consecutive penalty
-      let score = restBalanceScore(mRest, fRest);
-      // Bonus for game type variety: prefer less-used types
+      // Score: 50/50 ratio (primary) + rest balance (secondary) + consecutive penalty
       const comboTypeCount = { mens: 0, womens: 0, mixed: 0 };
       combo.forEach(t => comboTypeCount[t]++);
-      for (const t of ['mens', 'womens', 'mixed']) {
-        score += (typeUsed[t] + comboTypeCount[t]) * 0.01;
+      let score = 0;
+      if (g >= 1) {
+        // Simulate cumulative type counts after this combo
+        const simMixed = typeUsed.mixed + comboTypeCount.mixed;
+        const simMens = typeUsed.mens + comboTypeCount.mens;
+        const simWomens = typeUsed.womens + comboTypeCount.womens;
+        const simTotal = simMixed + simMens + simWomens;
+
+        // Primary: cumulative mixed ratio should approach 50%
+        const mixedRatio = simMixed / simTotal;
+        score += Math.abs(mixedRatio - 0.5) * 200;
+
+        // Secondary: mens and womens should be balanced within non-mixed
+        const nonMixed = simMens + simWomens;
+        if (nonMixed > 0) {
+          const mensRatio = simMens / nonMixed;
+          score += Math.abs(mensRatio - 0.5) * 50;
+        }
+
+        // Tertiary: rest balance
+        score += restBalanceScore(mRest, fRest);
+      } else {
+        score += restBalanceScore(mRest, fRest);
+        for (const t of ['mens', 'womens', 'mixed']) {
+          score += (typeUsed[t] + comboTypeCount[t]) * 0.01;
+        }
       }
       // Heavy penalty for consecutive rest
-      score += consecutiveRests * 100;
+      score += consecutiveRests * 1000;
 
       if (score < bestScore) {
         bestScore = score;
