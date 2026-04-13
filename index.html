@@ -15,45 +15,38 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
 <style>
   :root {
-    --bg: #1B1B1E; --text: #fff; --text-secondary: #E5E5EA; --text-muted: #8E8E93;
-    --card: #2C2C30; --input: #3A3A3C; --input-hover: #48484A;
-    --tag-bg: #48484a90; --tag-text: #E5E5EA; --tag-remove: #636366;
-    --divider: #3A3A3C; --toggle-bg: #3A3A3C; --toggle-slider: #636366;
-    --btn-action-bg: #2C2C30; --btn-action-text: #fff;
-    --badge-play-bg: rgba(49,130,246,0.25); --badge-play-text: #6AADFF;
-    --badge-rest-bg: rgba(255,59,48,0.25); --badge-rest-text: #FF6961;
-    --court-mens-bg: rgba(49,130,246,0.2); --court-mens-text: #6AADFF;
-    --court-womens-bg: rgba(236,72,153,0.2); --court-womens-text: #F472B6;
-    --court-mixed-bg: rgba(139,92,246,0.2); --court-mixed-text: #A78BFA;
-    --court-rest-bg: rgba(142,142,147,0.15); --court-rest-text: #8E8E93;
-    --chip-male-bg: rgba(49,130,246,0.15); --chip-male-text: #6AADFF;
-    --chip-female-bg: rgba(236,72,153,0.15); --chip-female-text: #F472B6;
-    --chip-rest-bg: rgba(142,142,147,0.1); --chip-rest-text: #636366;
-    --error-bg: rgba(255,59,48,0.15); --error-text: #FF6961;
-    --game-card-1: #2C2C30; --game-card-2: #2D2A1F; --game-card-3: #1F2D28;
-    --stepper-text: lab(91.64% 0 -0.01);
+    /* Accent */
+    --blue: #6AADFF; --pink: #F472B6; --purple: #A78BFA; --red: #FF6961;
+    /* Text */
+    --bg: #000000; --text: #fff; --text-secondary: #E5E5EA; --text-muted: #8E8E93;
     --placeholder: #636366; --placeholder-tag: #8E8E93;
+    /* Surface */
+    --card: #16171B; --input: #16171B; --input-hover: #48484A;
+    --divider: #2C2E36; --tag-bg: #2C2E36; --tag-remove: #636366;
+    --toggle-bg: #2C2E36; --toggle-slider: #16171B;
+    /* Button */
+    --btn-action-bg: #FFFFFF; --btn-action-text: #000000;
+    /* Alpha */
+    --badge-play-bg: rgba(49,130,246,0.25); --badge-rest-bg: rgba(255,59,48,0.25);
+    --error-bg: rgba(255,59,48,0.15);
+    --stepper-text: lab(91.64% 0 -0.01);
   }
   html.light {
+    /* Accent */
+    --blue: #3182F6; --pink: #E0458E; --purple: #7957FF; --red: #F04452;
+    /* Text */
     --bg: #F3F4F6; --text: #16181B; --text-secondary: #333D4B; --text-muted: #8B95A1;
-    --card: #FFFFFF; --input: #F0F1F3; --input-hover: #F0F0F1;
-    --tag-bg: #F0F0F1; --tag-text: #333D4B; --tag-remove: #B0B8C1;
-    --divider: #F0F0F1; --toggle-bg: #F0F1F3; --toggle-slider: #FFFFFF;
-    --btn-action-bg: #FFFFFF; --btn-action-text: #333D4B;
-    --badge-play-bg: rgba(49,130,246,0.12); --badge-play-text: #3182F6;
-    --badge-rest-bg: rgba(255,72,72,0.12); --badge-rest-text: #F04452;
-    --court-mens-bg: rgba(49,130,246,0.08); --court-mens-text: #3182F6;
-    --court-womens-bg: rgba(236,72,153,0.08); --court-womens-text: #E0458E;
-    --court-mixed-bg: rgba(121,87,255,0.08); --court-mixed-text: #7957FF;
-    --court-rest-bg: rgba(139,149,161,0.1); --court-rest-text: #8B95A1;
-    --chip-male-bg: rgba(49,130,246,0.08); --chip-male-text: #3182F6;
-    --chip-female-bg: rgba(236,72,153,0.08); --chip-female-text: #E0458E;
-    --chip-rest-bg: rgba(139,149,161,0.06); --chip-rest-text: #B0B8C1;
-    --error-bg: rgba(240,68,82,0.08); --error-text: #F04452;
-    --game-card-1: #FFFFFF; --game-card-2: #FFFDF7; --game-card-3: #F7FDFA;
-    --stepper-text: #333D4B;
     --placeholder: #B0B8C1; --placeholder-tag: #B0B8C1;
-    --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    /* Surface */
+    --card: #FFFFFF; --input: #F0F1F3; --input-hover: #F0F0F1;
+    --divider: #F0F0F1; --tag-bg: #F0F0F1; --tag-remove: #B0B8C1;
+    --toggle-bg: #F0F1F3; --toggle-slider: #FFFFFF;
+    /* Button */
+    --btn-action-bg: #FFFFFF; --btn-action-text: #333D4B;
+    /* Alpha */
+    --badge-play-bg: rgba(49,130,246,0.12); --badge-rest-bg: rgba(255,72,72,0.12);
+    --error-bg: rgba(240,68,82,0.08);
+    --stepper-text: #333D4B; --stepper-bg: #F0F1F3;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { overflow: hidden; height: 100svh; overscroll-behavior: none; }
@@ -73,27 +66,18 @@
     position: sticky; top: 0; z-index: 50;
     padding: 16px 18px 8px;
     margin: 0 -16px;
-    background: #1B1B1E;
+    background: rgba(0,0,0,0.2);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
   }
   html.light .header-wrap {
-    background: #F3F4F6;
-  }
-  .header-wrap::after {
-    content: ''; display: block;
-    height: 40px;
-    position: absolute; left: 0; right: 0; top: calc(100% - 8px);
-    background: linear-gradient(to bottom, #1B1B1E, rgba(27,27,30,0));
-    pointer-events: none;
-  }
-  html.light .header-wrap::after {
-    background: linear-gradient(to bottom, #F3F4F6, rgba(243,244,246,0));
+    background: rgba(243,244,246,0.2);
   }
   .header {
     padding: 0 0 2px;
     display: flex; align-items: flex-start; justify-content: space-between;
   }
-  .header-left { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-  .header-sub { font-size: 14px; font-weight: 500; color: var(--text-muted); margin-bottom: 4px; }
+  .header-left { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   .header h1 {
     font-size: 12px; font-weight: 600; color: var(--text);
     line-height: 1.25; letter-spacing: -0.2px;
@@ -124,26 +108,21 @@
   html.light .theme-toggle .icon-moon { opacity: 0.4; }
 
   /* Section Title */
-  .section-title {
-    font-size: 16px; font-weight: 600; color: var(--text-secondary);
-    padding: 16px 0 12px; letter-spacing: -0.2px;
-  }
   .section-title-inner {
-    font-size: 14px; font-weight: 600; color: var(--text-secondary);
-    margin-bottom: 12px; letter-spacing: -0.2px;
+    font-size: 16px; font-weight: 600; color: var(--text-secondary);
+    margin-bottom: 16px; letter-spacing: -0.2px;
   }
 
   /* Cards */
   .card {
-    background: var(--card); border-radius: 20px; padding: 16px;
-    margin-bottom: 8px; transition: background 0.3s, box-shadow 0.3s;
+    background: var(--card); border-radius: 16px; padding: 16px;
+    margin-bottom: 12px; transition: background 0.3s, box-shadow 0.3s;
   }
 
   /* Form */
   .form-label {
     font-size: 13px; font-weight: 600; color: var(--text-muted);
-    letter-spacing: -0.2px;
-    margin-bottom: 8px; display: block;
+    margin-bottom: 10px; letter-spacing: -0.2px; display: block;
   }
   .form-input {
     width: 100%; padding: 14px 16px; border: none;
@@ -170,13 +149,12 @@
     background: var(--tag-bg);
   }
   .tag:active { cursor: grabbing; }
-  .tag.dragging { opacity: 0.3; transform: scale(0.95); pointer-events: none; }
+  .tag.dragging { opacity: 0.2; transform: scale(0.95); pointer-events: none; transition: opacity 0.2s, transform 0.2s; }
   @keyframes tagIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
   }
-  .tag.male { color: var(--tag-text); }
-  .tag.female { color: var(--tag-text); }
+  .tag.male, .tag.female { color: var(--text-secondary); }
   .tag .tag-remove {
     display: flex; align-items: center; justify-content: center;
     width: 20px; height: 20px;
@@ -199,7 +177,7 @@
 
   .stepper {
     display: flex; align-items: center; gap: 0;
-    background: var(--input); border-radius: 14px; overflow: hidden;
+    background: var(--stepper-bg, #2C2E36); border-radius: 14px; overflow: hidden;
   }
   .stepper-btn {
     width: 40px; height: 46px; border: none; background: none;
@@ -210,15 +188,16 @@
     line-height: 1; padding: 0;
   }
   .stepper-btn:active { background: rgba(255,255,255,0.1); }
-  .stepper-input {
-    flex: 1; text-align: center; background: none !important;
-    border-radius: 0 !important; padding: 14px 0 !important;
-    -moz-appearance: textfield;
-    font-feature-settings: "ss01" 1;
+  .stepper-input { display: none; }
+  .stepper-display {
+    flex: 1; position: relative; overflow: hidden; height: 46px;
   }
-  .stepper-input::-webkit-outer-spin-button,
-  .stepper-input::-webkit-inner-spin-button {
-    -webkit-appearance: none; margin: 0;
+  .stepper-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 600; color: var(--text);
+    font-family: inherit; font-feature-settings: "ss01" 1;
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
   .form-group { margin-bottom: 16px; }
@@ -259,16 +238,19 @@
   .btn {
     display: block; width: 100%; padding: 16px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
-    background: #E94677; color: var(--bg);
+    background: #FFFFFF; color: #000000;
     border: none; border-radius: 0;
-    font-size: 16px; font-weight: 700; font-family: inherit;
+    font-size: 16px; font-weight: 600; font-family: inherit;
     cursor: pointer; transition: transform 0.1s, opacity 0.2s;
     letter-spacing: -0.2px;
   }
 
+  html.light .btn {
+    background: #000000; color: #FFFFFF;
+  }
 
   .error-msg {
-    background: var(--error-bg); color: var(--error-text); padding: 12px 16px;
+    background: var(--error-bg); color: var(--red); padding: 12px 16px;
     border-radius: 14px; margin-bottom: 0; display: none;
     font-size: 14px; font-weight: 500;
     overflow: hidden;
@@ -290,94 +272,23 @@
     100% { opacity: 0; margin-top: 0; max-height: 0; padding: 0 16px; }
   }
 
-  /* Results */
-  .results { display: flex; flex-direction: column; gap: 12px; }
-
-  .game-card {
-    border-radius: 20px; overflow: hidden;
-    padding: 20px 20px 16px;
-  }
-  .game-card:nth-child(3n+1) { background: var(--game-card-1); }
-  .game-card:nth-child(3n+2) { background: var(--game-card-2); }
-  .game-card:nth-child(3n+3) { background: var(--game-card-3); }
-
-  .game-title {
-    font-size: 22px; font-weight: 800; color: var(--text);
-    margin-bottom: 16px; letter-spacing: -0.2px;
-  }
-
-  .court-block { margin-bottom: 14px; }
-  .court-block:last-child { margin-bottom: 0; }
-
-  .court-type-badge {
-    display: inline-block; padding: 5px 12px;
-    border-radius: 10px; font-size: 12px; font-weight: 700;
-    margin-bottom: 8px; letter-spacing: -0.2px;
-  }
-  .court-type-badge.mens { background: var(--court-mens-bg); color: var(--court-mens-text); }
-  .court-type-badge.womens { background: var(--court-womens-bg); color: var(--court-womens-text); }
-  .court-type-badge.mixed { background: var(--court-mixed-bg); color: var(--court-mixed-text); }
-  .court-type-badge.rest { background: var(--court-rest-bg); color: var(--court-rest-text); }
-
-  .player-list {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    padding-left: 2px;
-  }
-  .player-chip {
-    padding: 7px 14px; border-radius: 12px;
-    font-size: 14px; font-weight: 600;
-    letter-spacing: -0.2px;
-  }
-  .player-chip.male { background: var(--chip-male-bg); color: var(--chip-male-text); }
-  .player-chip.female { background: var(--chip-female-bg); color: var(--chip-female-text); }
-  .player-chip.rest-male { background: var(--chip-rest-bg); color: var(--chip-rest-text); }
-  .player-chip.rest-female { background: var(--chip-rest-bg); color: var(--chip-rest-text); }
-
   /* Summary */
-  .summary-card {
-    background: var(--card); border-radius: 20px;
-    padding: 20px;
-  }
-  .stat-group-label {
-    font-size: 13px; font-weight: 600; color: var(--text-muted);
-    margin-bottom: 8px; letter-spacing: -0.2px;
-  }
-  .stat-group-label + .stat-tags { margin-bottom: 16px; }
-  .stat-group-label + .stat-tags:last-child { margin-bottom: 0; }
-  .stat-tags {
+  .form-label + .tags { margin-bottom: 16px; }
+  .form-label + .tags:last-child { margin-bottom: 0; }
+  .tags {
     display: flex; flex-wrap: wrap; gap: 8px;
-  }
-  .stat-tag {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 12px 8px 16px; border-radius: 999px;
-    font-size: 14px; font-weight: 500; color: var(--tag-text);
-    letter-spacing: -0.2px;
-    background: var(--tag-bg);
   }
   .stat-badge {
     display: flex; align-items: center; justify-content: center;
     width: 22px; height: 22px; border-radius: 50%;
     font-size: 12px; font-weight: 700;
   }
-  .stat-badge.play { background: var(--badge-play-bg); color: var(--badge-play-text); }
-  .stat-badge.rest { background: var(--badge-rest-bg); color: var(--badge-rest-text); }
-
-  /* Divider */
-  .section-divider {
-    display: flex; align-items: center; gap: 12px;
-    margin: 24px 0 16px; padding: 0 4px;
-  }
-  .section-divider span {
-    font-size: 13px; font-weight: 600; color: var(--placeholder);
-    text-transform: uppercase; letter-spacing: -0.2px; white-space: nowrap;
-  }
-  .section-divider::before, .section-divider::after {
-    content: ''; flex: 1; height: 1px; background: var(--divider);
-  }
+  .stat-badge.play { background: var(--badge-play-bg); color: var(--blue); }
+  .stat-badge.rest { background: var(--badge-rest-bg); color: var(--red); }
 
   /* Action bar */
   .action-bar {
-    display: none; gap: 8px; margin-top: 8px; margin-bottom: 0;
+    display: none; gap: 8px; margin-top: 12px; margin-bottom: 12px;
   }
   .action-bar.visible { display: flex; }
   .btn-action {
@@ -396,10 +307,7 @@
 
   /* Text result */
   .text-result {
-    background: var(--card); border-radius: 20px; padding: 20px;
-    margin-bottom: 8px;
     white-space: pre-wrap; font-size: 14px; line-height: 1.8;
-    font-family: inherit; color: var(--text);
     letter-spacing: -0.2px;
   }
   .text-result .game-block { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--divider); }
@@ -413,10 +321,19 @@
     padding-left: 2px;
   }
   .text-result .play-line {
-    color: var(--badge-play-text);
+    color: var(--blue);
   }
   .text-result .rest-line {
-    color: var(--badge-rest-text);
+    color: var(--red);
+    animation: breathe 3s ease-in-out infinite;
+  }
+  .player-chip.rest-male, .player-chip.rest-female,
+  .court-type-badge.rest {
+    animation: breathe 3s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
   }
 
   /* Page transitions */
@@ -451,8 +368,6 @@
 
   /* Light mode card shadows */
   html.light .card,
-  html.light .summary-card,
-  html.light .text-result,
   html.light .btn-action {
     box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
   }
@@ -468,7 +383,7 @@
   <div class="header-wrap">
     <div class="header">
       <div class="header-left">
-        <svg width="105" height="32" viewBox="0 0 302 92" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4635_6820)"><path d="M184.799 32.83C184.799 16.49 180.869 0 159.799 0C140.869 0 134.809 13.82 134.809 16.34V3.61H101.679V54.16H68.4492C68.4492 66.03 75.8392 72.23 84.5192 72.23C90.5392 72.23 96.4992 69.24 98.7192 63.44H101.679V89.58H134.809V38.13C134.809 30.43 138.199 26.12 144.449 26.12C149.019 26.12 151.769 29.63 151.769 37.02V89.58H184.799V32.83Z"/><path d="M35.31 46.6C35.31 29.07 44.65 13.75 58.56 5.48999V3.60999H0V37.76H19.83V89.58H58.56V87.7C44.65 79.43 35.31 64.12 35.31 46.59V46.6Z"/><path d="M69.7891 37.7599H94.0691C94.0691 27.0499 89.2991 21.45 81.9291 21.45C74.5591 21.45 69.7891 27.0499 69.7891 37.7599Z"/><path d="M226.51 89.53H193.67V41.29C193.67 41.29 200.18 43.19 210.09 43.19C220 43.19 226.51 41.29 226.51 41.29V89.53Z"/><path d="M260.339 26.25C260.339 24.19 262.399 22.3 265.889 22.3C274.559 22.3 273.609 30.1 273.609 30.1H300.169C300.169 20.63 297.399 0 266.649 0C238.599 0 232.939 17.42 232.939 28.54C232.939 43.81 243.579 50.88 250.549 53.75C266.869 60.47 275.209 59.25 275.209 65.12C275.209 67.41 272.889 69.6 268.029 69.6C258.219 69.6 257.829 60.14 257.829 60.13H231.249C230.339 69.72 234.459 91.74 265.739 91.74C297.019 91.74 302.009 74.88 302.009 62.62C302.009 32.5 260.349 37.04 260.349 26.24L260.339 26.25Z"/><path d="M210.091 36.42C220.148 36.42 228.301 28.2671 228.301 18.21C228.301 8.15289 220.148 0 210.091 0C200.034 0 191.881 8.15289 191.881 18.21C191.881 28.2671 200.034 36.42 210.091 36.42Z"/></g><defs><clipPath id="clip0_4635_6820"><rect width="302" height="91.75" fill="white"/></clipPath></defs></svg>
+        <svg width="131" height="40" viewBox="0 0 302 92" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4635_6820)"><path d="M184.799 32.83C184.799 16.49 180.869 0 159.799 0C140.869 0 134.809 13.82 134.809 16.34V3.61H101.679V54.16H68.4492C68.4492 66.03 75.8392 72.23 84.5192 72.23C90.5392 72.23 96.4992 69.24 98.7192 63.44H101.679V89.58H134.809V38.13C134.809 30.43 138.199 26.12 144.449 26.12C149.019 26.12 151.769 29.63 151.769 37.02V89.58H184.799V32.83Z"/><path d="M35.31 46.6C35.31 29.07 44.65 13.75 58.56 5.48999V3.60999H0V37.76H19.83V89.58H58.56V87.7C44.65 79.43 35.31 64.12 35.31 46.59V46.6Z"/><path d="M69.7891 37.7599H94.0691C94.0691 27.0499 89.2991 21.45 81.9291 21.45C74.5591 21.45 69.7891 27.0499 69.7891 37.7599Z"/><path d="M226.51 89.53H193.67V41.29C193.67 41.29 200.18 43.19 210.09 43.19C220 43.19 226.51 41.29 226.51 41.29V89.53Z"/><path d="M260.339 26.25C260.339 24.19 262.399 22.3 265.889 22.3C274.559 22.3 273.609 30.1 273.609 30.1H300.169C300.169 20.63 297.399 0 266.649 0C238.599 0 232.939 17.42 232.939 28.54C232.939 43.81 243.579 50.88 250.549 53.75C266.869 60.47 275.209 59.25 275.209 65.12C275.209 67.41 272.889 69.6 268.029 69.6C258.219 69.6 257.829 60.14 257.829 60.13H231.249C230.339 69.72 234.459 91.74 265.739 91.74C297.019 91.74 302.009 74.88 302.009 62.62C302.009 32.5 260.349 37.04 260.349 26.24L260.339 26.25Z"/><path d="M210.091 36.42C220.148 36.42 228.301 28.2671 228.301 18.21C228.301 8.15289 220.148 0 210.091 0C200.034 0 191.881 8.15289 191.881 18.21C191.881 28.2671 200.034 36.42 210.091 36.42Z"/></g><defs><clipPath id="clip0_4635_6820"><rect width="302" height="91.75" fill="white"/></clipPath></defs></svg>
         <h1>Tennis Club at Hannam Court</h1>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
@@ -479,7 +394,7 @@
     </div>
   </div>
 
-  <div id="inputSection" style="padding-top:24px;">
+  <div id="inputSection" style="padding-top:16px;">
   <div class="card">
     <div class="section-title-inner">남자 참가자</div>
     <div class="tag-container" id="maleTagContainer" onclick="this.querySelector('.tag-input').focus()">
@@ -504,6 +419,7 @@
         <div class="stepper">
           <button class="stepper-btn" onclick="stepValue('courtCount',-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           <input class="form-input stepper-input" type="number" id="courtCount" value="1" min="1" max="10">
+          <div class="stepper-display" id="courtCountDisplay"><span class="stepper-num">1</span></div>
           <button class="stepper-btn" onclick="stepValue('courtCount',1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
         </div>
       </div>
@@ -512,6 +428,7 @@
         <div class="stepper">
           <button class="stepper-btn" onclick="stepValue('gameCount',-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           <input class="form-input stepper-input" type="number" id="gameCount" value="1" min="1" max="50">
+          <div class="stepper-display" id="gameCountDisplay"><span class="stepper-num">1</span></div>
           <button class="stepper-btn" onclick="stepValue('gameCount',1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
         </div>
       </div>
@@ -531,7 +448,7 @@
   </div>
   </div>
 
-  <div id="resultSection" style="display:none;padding-top:24px;">
+  <div id="resultSection" style="display:none;padding-top:16px;">
   <div id="results"></div>
   <div class="action-bar" id="actionBar">
     <button class="btn-action" onclick="refreshGames()">
@@ -575,21 +492,6 @@ function removeTag(btn) {
   validateFields();
 }
 
-function checkFieldError(gender) {
-  const id = gender === 'male' ? 'maleError' : 'femaleError';
-  const containerId = gender === 'male' ? 'maleTagContainer' : 'femaleTagContainer';
-  const el = document.getElementById(id);
-  if (el.style.display === 'block' && getTagNames(containerId).length >= 2) {
-    el.classList.remove('showing');
-    el.classList.add('hiding');
-    el.addEventListener('animationend', () => {
-      el.style.display = 'none';
-      el.textContent = '';
-      el.classList.remove('hiding');
-    }, { once: true });
-  }
-}
-
 function getTagNames(containerId) {
   return Array.from(document.getElementById(containerId).querySelectorAll('.tag'))
     .map(t => t.dataset.name);
@@ -607,6 +509,7 @@ function handleTagInput(e) {
     if (val) {
       createTag(container, val, gender);
       input.value = '';
+      if (navigator.vibrate) navigator.vibrate(30);
     }
   }
   if (e.key === 'Backspace' && input.value === '') {
@@ -656,7 +559,7 @@ function flipAnimate(container, skipTag) {
       t.style.transform = `translate(${dx}px, ${dy}px)`;
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          t.style.transition = 'transform 0.2s cubic-bezier(0.2, 0, 0, 1)';
+          t.style.transition = 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)';
           t.style.transform = '';
           t.addEventListener('transitionend', () => {
             t.style.transition = '';
@@ -675,12 +578,13 @@ function initDrag(tag) {
   tag.addEventListener('dragstart', (e) => {
     dragTag = tag;
     const ghost = tag.cloneNode(true);
+    const cs = getComputedStyle(tag);
     ghost.style.cssText = `
       position: absolute; top: -9999px; left: -9999px;
-      border-radius: 999px; background: #48484a90;
+      border-radius: 999px; background: ${cs.background};
       padding: 8px 12px 8px 16px; font-size: 14px; font-weight: 500;
       display: flex; align-items: center; gap: 8px;
-      color: #E5E5EA; font-family: inherit;
+      color: ${cs.color}; font-family: inherit;
     `;
     document.body.appendChild(ghost);
     e.dataTransfer.setDragImage(ghost, ghost.offsetWidth / 2, ghost.offsetHeight / 2);
@@ -705,14 +609,15 @@ function initDrag(tag) {
       dragTag = tag;
       tag.classList.add('dragging');
       const rect = tag.getBoundingClientRect();
+      const cs = getComputedStyle(tag);
       touchGhost = tag.cloneNode(true);
       touchGhost.classList.remove('dragging');
       touchGhost.style.cssText = `
         position: fixed; z-index: 9999; pointer-events: none;
-        border-radius: 999px; background: #48484a90;
+        border-radius: 999px; background: ${cs.background};
         padding: 8px 12px 8px 16px; font-size: 14px; font-weight: 500;
         display: flex; align-items: center; gap: 8px;
-        color: #E5E5EA; font-family: inherit; opacity: 0.9;
+        color: ${cs.color}; font-family: inherit; opacity: 0.9;
         left: ${rect.left}px; top: ${rect.top}px;
         width: ${rect.width}px;
       `;
@@ -734,7 +639,7 @@ function initDrag(tag) {
     }
     if (isAnimating) return;
     const now = Date.now();
-    if (now - lastSwapTime < 250) return;
+    if (now - lastSwapTime < 150) return;
     const container = tag.closest('.tag-container');
     const tags = [...container.querySelectorAll('.tag:not(.dragging)')];
     let closest = null;
@@ -784,7 +689,7 @@ function initContainer(container) {
     e.preventDefault();
     if (!dragTag || isAnimating) return;
     const now = Date.now();
-    if (now - lastSwapTime < 250) return;
+    if (now - lastSwapTime < 150) return;
     const tags = [...container.querySelectorAll('.tag:not(.dragging)')];
     let closest = null;
     let closestDist = Infinity;
@@ -831,13 +736,38 @@ createTag = function(container, name, gender) {
   validateFields();
 };
 
+// Default members
+['장민','승우','재진','한빈','태형','준용','병수'].forEach(n => createTag(document.getElementById('maleTagContainer'), n, 'male'));
+['명민','연미','소정','지희','은영'].forEach(n => createTag(document.getElementById('femaleTagContainer'), n, 'female'));
+document.getElementById('courtCount').value = 2;
+document.getElementById('courtCountDisplay').querySelector('.stepper-num').textContent = 2;
+document.getElementById('gameCount').value = 6;
+document.getElementById('gameCountDisplay').querySelector('.stepper-num').textContent = 6;
+
 
 function stepValue(id, delta) {
   const input = document.getElementById(id);
   const val = parseInt(input.value) + delta;
   const min = parseInt(input.min);
   const max = parseInt(input.max);
-  if (val >= min && val <= max) input.value = val;
+  if (val < min || val > max) return;
+  input.value = val;
+  const display = document.getElementById(id + 'Display');
+  const oldNum = display.querySelector('.stepper-num');
+  const newNum = document.createElement('span');
+  newNum.className = 'stepper-num';
+  newNum.textContent = val;
+  // new number starts off-screen
+  newNum.style.transform = delta > 0 ? 'translateY(100%)' : 'translateY(-100%)';
+  newNum.style.opacity = '0';
+  display.appendChild(newNum);
+  // force reflow then animate
+  newNum.offsetHeight;
+  oldNum.style.transform = delta > 0 ? 'translateY(-100%)' : 'translateY(100%)';
+  oldNum.style.opacity = '0';
+  newNum.style.transform = 'translateY(0)';
+  newNum.style.opacity = '1';
+  setTimeout(() => oldNum.remove(), 200);
   validateFields();
 }
 
@@ -1118,7 +1048,7 @@ function generateGames() {
   window._lastResult = plainText.trim();
 
   // Render as styled text
-  let html = '<div class="text-result"><div class="section-title-inner">게임 결과</div>';
+  let html = '<div class="card text-result"><div class="section-title-inner">매칭 결과</div>';
   for (const round of schedule) {
     html += `<div class="game-block">`;
     html += `<div class="game-label">게임 ${round.round}</div>`;
@@ -1134,22 +1064,22 @@ function generateGames() {
   html += '</div>';
 
   // Summary
-  html += `<div class="summary-card">`;
+  html += `<div class="card">`;
   html += `<div class="section-title-inner">참가자 통계</div>`;
-  html += `<div class="stat-group-label">남자 참가자</div>`;
-  html += `<div class="stat-tags">`;
+  html += `<div class="form-label">남자 참가자</div>`;
+  html += `<div class="tags">`;
   allPlayers.filter(p => p.gender === 'M').forEach(p => {
-    html += `<div class="stat-tag">${p.name}<span class="stat-badge play">${playCount[p.name]}</span>`;
+    html += `<div class="tag">${p.name}<span class="stat-badge play">${playCount[p.name]}</span>`;
     if (restCount[p.name] > 0) {
       html += `<span class="stat-badge rest">${restCount[p.name]}</span>`;
     }
     html += `</div>`;
   });
   html += `</div>`;
-  html += `<div class="stat-group-label">여자 참가자</div>`;
-  html += `<div class="stat-tags">`;
+  html += `<div class="form-label">여자 참가자</div>`;
+  html += `<div class="tags">`;
   allPlayers.filter(p => p.gender === 'F').forEach(p => {
-    html += `<div class="stat-tag">${p.name}<span class="stat-badge play">${playCount[p.name]}</span>`;
+    html += `<div class="tag">${p.name}<span class="stat-badge play">${playCount[p.name]}</span>`;
     if (restCount[p.name] > 0) {
       html += `<span class="stat-badge rest">${restCount[p.name]}</span>`;
     }
@@ -1186,8 +1116,20 @@ function toggleStartType() {
 }
 
 function refreshGames() {
-  generateGames();
-  document.querySelector('.container').scrollTo({ top: 0, behavior: 'smooth' });
+  const resultsEl = document.getElementById('results');
+  resultsEl.style.transition = 'filter 0.5s ease, opacity 0.5s ease';
+  resultsEl.style.filter = 'blur(8px)';
+  resultsEl.style.opacity = '0.4';
+  setTimeout(() => {
+    generateGames();
+    document.querySelector('.container').scrollTo({ top: 0, behavior: 'smooth' });
+    requestAnimationFrame(() => {
+      resultsEl.style.transition = 'filter 0.5s ease, opacity 0.5s ease';
+      resultsEl.style.filter = '';
+      resultsEl.style.opacity = '';
+      setTimeout(() => { resultsEl.style.transition = ''; }, 500);
+    });
+  }, 500);
 }
 
 function shareResult() {
@@ -1209,6 +1151,28 @@ function shareResult() {
     });
   }
 }
+
+// Shake to reshuffle
+(function() {
+  let lastX = 0, lastY = 0, lastZ = 0;
+  let lastShake = 0;
+  const threshold = 25;
+  window.addEventListener('devicemotion', (e) => {
+    const a = e.accelerationIncludingGravity;
+    if (!a) return;
+    const dx = Math.abs(a.x - lastX);
+    const dy = Math.abs(a.y - lastY);
+    const dz = Math.abs(a.z - lastZ);
+    lastX = a.x; lastY = a.y; lastZ = a.z;
+    if ((dx + dy + dz) > threshold && isResultView) {
+      const now = Date.now();
+      if (now - lastShake < 1000) return;
+      lastShake = now;
+      if (navigator.vibrate) navigator.vibrate(100);
+      refreshGames();
+    }
+  });
+})();
 
 function clearErrors() {
   document.querySelectorAll('.error-msg').forEach(el => {
