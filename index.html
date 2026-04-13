@@ -1222,14 +1222,10 @@ function validateFields() {
   const total = males.length + females.length;
   const needed = courts * 4;
 
-  // 아직 입력되지 않은 필드는 얼럿 노출하지 않음
-  if (males.length === 0) { hideError('male'); }
-  else if (males.length < 2) { showError('최소 2명 이상 입력하세요.', 'male'); }
-  else { hideError('male'); }
-
-  if (females.length === 0) { hideError('female'); }
-  else if (females.length < 2) { showError('최소 2명 이상 입력하세요.', 'female'); }
-  else { hideError('female'); }
+  // 게임 생성 버튼을 누르기 전에는 최소 인원 에러를 표시하지 않음
+  // 이미 에러가 표시된 상태에서 조건 충족 시에만 숨김
+  if (males.length >= 2) { hideError('male'); }
+  if (females.length >= 2) { hideError('female'); }
 
   if (males.length >= 2 && females.length >= 2 && total < needed) {
     const msg = `코트 ${courts}개에 최소 ${needed}명이 필요합니다. (현재 ${total}명)`;
