@@ -99,13 +99,13 @@
     background: var(--text); transition: transform 0.3s ease, background 0.3s;
     display: flex; align-items: center; justify-content: center;
   }
-  .theme-toggle .toggle-thumb { transform: translateX(24px); }
-  html.light .theme-toggle .toggle-thumb { transform: translateX(0); }
+  .theme-toggle .toggle-thumb { transform: translateX(0); }
+  html.light .theme-toggle .toggle-thumb { transform: translateX(24px); }
   .theme-toggle .icon-sun, .theme-toggle .icon-moon { position: absolute; top: 50%; transform: translateY(-50%); transition: opacity 0.3s; }
-  .theme-toggle .icon-sun { left: 8px; opacity: 0.4; }
-  .theme-toggle .icon-moon { right: 8px; opacity: 1; }
-  html.light .theme-toggle .icon-sun { opacity: 1; }
+  .theme-toggle .icon-moon { left: 8px; opacity: 1; }
+  .theme-toggle .icon-sun { right: 8px; opacity: 0.4; }
   html.light .theme-toggle .icon-moon { opacity: 0.4; }
+  html.light .theme-toggle .icon-sun { opacity: 1; }
 
   /* Section Title */
   .section-title-inner {
@@ -375,7 +375,7 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
   }
 </style>
-<script>if(localStorage.getItem('theme')!=='dark')document.documentElement.classList.add('light');</script>
+<script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 <div class="container">
@@ -1030,7 +1030,7 @@ function generateGames() {
   }
 
   // Build plain text
-  const typeLabels = { mens: '남자복식', womens: '여자복식', mixed: '혼성복식' };
+  const typeLabels = { mens: '남복', womens: '여복', mixed: '혼복' };
   const courtLetters = 'ABCDEFGHIJ';
 
   let plainText = '';
