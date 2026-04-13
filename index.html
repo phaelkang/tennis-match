@@ -1158,6 +1158,7 @@ function toggleStartType() {
 
 function refreshGames() {
   generateGames();
+  document.querySelector('.container').scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function shareResult() {
