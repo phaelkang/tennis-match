@@ -2,57 +2,138 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
 <title>테니스 게임 매칭</title>
+<meta property="og:title" content="테니스 게임 매칭">
+<meta property="og:description" content="We Own The Court - Tennis Club">
+<meta property="og:image" content="metaimg.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="테니스 게임 매칭">
+<meta name="twitter:description" content="We Own The Court - Tennis Club">
+<meta name="twitter:image" content="metaimg.jpg">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
 <style>
+  :root {
+    --bg: #1B1B1E; --text: #fff; --text-secondary: #E5E5EA; --text-muted: #8E8E93;
+    --card: #2C2C30; --input: #3A3A3C; --input-hover: #48484A;
+    --tag-bg: #48484a90; --tag-text: #E5E5EA; --tag-remove: #636366;
+    --divider: #3A3A3C; --toggle-bg: #3A3A3C; --toggle-slider: #636366;
+    --btn-action-bg: #2C2C30; --btn-action-text: #fff;
+    --badge-play-bg: rgba(49,130,246,0.25); --badge-play-text: #6AADFF;
+    --badge-rest-bg: rgba(255,59,48,0.25); --badge-rest-text: #FF6961;
+    --court-mens-bg: rgba(49,130,246,0.2); --court-mens-text: #6AADFF;
+    --court-womens-bg: rgba(236,72,153,0.2); --court-womens-text: #F472B6;
+    --court-mixed-bg: rgba(139,92,246,0.2); --court-mixed-text: #A78BFA;
+    --court-rest-bg: rgba(142,142,147,0.15); --court-rest-text: #8E8E93;
+    --chip-male-bg: rgba(49,130,246,0.15); --chip-male-text: #6AADFF;
+    --chip-female-bg: rgba(236,72,153,0.15); --chip-female-text: #F472B6;
+    --chip-rest-bg: rgba(142,142,147,0.1); --chip-rest-text: #636366;
+    --error-bg: rgba(255,59,48,0.15); --error-text: #FF6961;
+    --game-card-1: #2C2C30; --game-card-2: #2D2A1F; --game-card-3: #1F2D28;
+    --stepper-text: lab(91.64% 0 -0.01);
+    --placeholder: #636366; --placeholder-tag: #8E8E93;
+  }
+  html.light {
+    --bg: #F3F4F6; --text: #16181B; --text-secondary: #333D4B; --text-muted: #8B95A1;
+    --card: #FFFFFF; --input: #F0F1F3; --input-hover: #F0F0F1;
+    --tag-bg: #F0F0F1; --tag-text: #333D4B; --tag-remove: #B0B8C1;
+    --divider: #F0F0F1; --toggle-bg: #F0F1F3; --toggle-slider: #FFFFFF;
+    --btn-action-bg: #FFFFFF; --btn-action-text: #333D4B;
+    --badge-play-bg: rgba(49,130,246,0.12); --badge-play-text: #3182F6;
+    --badge-rest-bg: rgba(255,72,72,0.12); --badge-rest-text: #F04452;
+    --court-mens-bg: rgba(49,130,246,0.08); --court-mens-text: #3182F6;
+    --court-womens-bg: rgba(236,72,153,0.08); --court-womens-text: #E0458E;
+    --court-mixed-bg: rgba(121,87,255,0.08); --court-mixed-text: #7957FF;
+    --court-rest-bg: rgba(139,149,161,0.1); --court-rest-text: #8B95A1;
+    --chip-male-bg: rgba(49,130,246,0.08); --chip-male-text: #3182F6;
+    --chip-female-bg: rgba(236,72,153,0.08); --chip-female-text: #E0458E;
+    --chip-rest-bg: rgba(139,149,161,0.06); --chip-rest-text: #B0B8C1;
+    --error-bg: rgba(240,68,82,0.08); --error-text: #F04452;
+    --game-card-1: #FFFFFF; --game-card-2: #FFFDF7; --game-card-3: #F7FDFA;
+    --stepper-text: #333D4B;
+    --placeholder: #B0B8C1; --placeholder-tag: #B0B8C1;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { overflow-y: scroll; overscroll-behavior: none; }
   body {
     font-family: "Wanted Sans Variable", "Wanted Sans", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
-    background: #1B1B1E; color: #fff; min-height: 100vh;
+    font-feature-settings: "ss01" 1;
+    background: var(--bg); color: var(--text); min-height: 100svh;
     -webkit-font-smoothing: antialiased;
+    transition: background 0.3s, color 0.3s;
   }
   .container { max-width: 480px; margin: 0 auto; padding: 16px; }
 
   /* Header */
   .header {
-    padding: 8px 0 8px;
-    text-align: left;
+    padding: 8px 0 16px;
+    display: flex; align-items: flex-start; justify-content: space-between;
   }
-  .header-sub { font-size: 14px; font-weight: 500; color: #8E8E93; margin-bottom: 4px; }
+  .header-left { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .header-sub { font-size: 14px; font-weight: 500; color: var(--text-muted); margin-bottom: 4px; }
   .header h1 {
-    font-size: 20px; font-weight: 600; color: #fff;
+    font-size: 14px; font-weight: 600; color: var(--text);
     line-height: 1.25; letter-spacing: -0.2px;
   }
 
+  /* Theme Toggle */
+  .theme-toggle {
+    position: relative; width: 52px; height: 28px;
+    background: var(--toggle-bg); border-radius: 999px;
+    cursor: pointer; border: none; padding: 0;
+    flex-shrink: 0; transition: background 0.3s;
+  }
+  html.light .theme-toggle {
+    background: #FFFFFF;
+  }
+  .theme-toggle .toggle-thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--text); transition: transform 0.3s ease, background 0.3s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .theme-toggle .toggle-thumb { transform: translateX(24px); }
+  html.light .theme-toggle .toggle-thumb { transform: translateX(0); }
+  .theme-toggle .icon-sun, .theme-toggle .icon-moon { position: absolute; top: 50%; transform: translateY(-50%); transition: opacity 0.3s; }
+  .theme-toggle .icon-sun { left: 8px; opacity: 0.4; }
+  .theme-toggle .icon-moon { right: 8px; opacity: 1; }
+  html.light .theme-toggle .icon-sun { opacity: 1; }
+  html.light .theme-toggle .icon-moon { opacity: 0.4; }
+
   /* Section Title */
   .section-title {
-    font-size: 16px; font-weight: 600; color: #e8e8e8;
+    font-size: 16px; font-weight: 600; color: var(--text-secondary);
     padding: 16px 0 12px; letter-spacing: -0.2px;
+  }
+  .section-title-inner {
+    font-size: 14px; font-weight: 600; color: var(--text-secondary);
+    margin-bottom: 12px; letter-spacing: -0.2px;
   }
 
   /* Cards */
   .card {
-    background: #2C2C30; border-radius: 20px; padding: 16px;
-    margin-bottom: 12px;
+    background: var(--card); border-radius: 20px; padding: 16px;
+    margin-bottom: 8px; transition: background 0.3s, box-shadow 0.3s;
   }
 
   /* Form */
   .form-label {
-    font-size: 13px; font-weight: 600; color: #8E8E93;
+    font-size: 13px; font-weight: 600; color: var(--text-muted);
     letter-spacing: -0.2px;
     margin-bottom: 8px; display: block;
   }
   .form-input {
     width: 100%; padding: 14px 16px; border: none;
-    background: #3A3A3C; border-radius: 14px;
-    font-size: 15px; font-family: inherit; color: #fff;
+    background: var(--input); border-radius: 14px;
+    font-size: 15px; font-family: inherit; color: var(--text);
     transition: background 0.2s;
   }
-  .form-input:focus { outline: none; background: #48484A; }
-  .form-input::placeholder { color: #636366; }
+  .form-input:focus { outline: none; background: var(--input-hover); }
+  .form-input::placeholder { color: var(--placeholder); }
   textarea.form-input { resize: none; min-height: 52px; line-height: 1.5; }
-  .hint { font-size: 12px; color: #8E8E93; margin-top: 6px; padding-left: 2px; }
+  .hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; padding-left: 2px; }
 
   /* Tag Input */
   .tag-container {
@@ -65,7 +146,7 @@
     font-size: 14px; font-weight: 500;
     letter-spacing: -0.2px;
     cursor: grab; user-select: none;
-    background: #48484a90;
+    background: var(--tag-bg);
   }
   .tag:active { cursor: grabbing; }
   .tag.dragging { opacity: 0.3; transform: scale(0.95); pointer-events: none; }
@@ -73,35 +154,35 @@
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
   }
-  .tag.male { color: #E5E5EA; }
-  .tag.female { color: #E5E5EA; }
+  .tag.male { color: var(--tag-text); }
+  .tag.female { color: var(--tag-text); }
   .tag .tag-remove {
     display: flex; align-items: center; justify-content: center;
     width: 20px; height: 20px;
-    border: none; background: #636366; padding: 0;
+    border: none; background: var(--tag-remove); padding: 0;
     cursor: pointer; border-radius: 50%;
     transition: background 0.15s;
     color: #ffffff; -webkit-appearance: none; appearance: none;
   }
   .tag .tag-remove svg { stroke: currentColor; }
-  .tag .tag-remove:hover { background: #8E8E93; }
+  .tag .tag-remove:hover { background: var(--text-muted); }
   .tag-input {
     border: none; background: none; outline: none;
-    font-size: 14px; font-weight: 500; font-family: inherit; color: #fff;
+    font-size: 14px; font-weight: 500; font-family: inherit; color: var(--text);
     min-width: 80px; flex: 1;
     letter-spacing: -0.2px;
-    padding: 4px;
+    
     height: 36px; line-height: 36px;
   }
-  .tag-input::placeholder { color: #8E8E93; }
+  .tag-input::placeholder { color: var(--placeholder-tag); }
 
   .stepper {
     display: flex; align-items: center; gap: 0;
-    background: #3A3A3C; border-radius: 14px; overflow: hidden;
+    background: var(--input); border-radius: 14px; overflow: hidden;
   }
   .stepper-btn {
     width: 40px; height: 46px; border: none; background: none;
-    color: lab(91.64% 0 -0.01); font-size: 22px; font-weight: 600;
+    color: var(--stepper-text); font-size: 22px; font-weight: 600;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     transition: background 0.15s;
     flex-shrink: 0;
@@ -126,42 +207,66 @@
 
   .toggle-wrap {
     display: flex; position: relative;
-    background: #3A3A3C; border-radius: 12px;
+    background: var(--toggle-bg); border-radius: 12px;
     padding: 3px; cursor: pointer; user-select: none;
     height: 46px;
   }
   .toggle-option {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; color: #636366;
+    font-size: 13px; font-weight: 600; color: var(--placeholder);
     position: relative; z-index: 1;
     transition: color 0.2s; letter-spacing: -0.2px;
   }
-  .toggle-option.active { color: #fff; }
+  .toggle-option.active { color: var(--text); }
   .toggle-slider {
-    position: absolute; top: 3px; left: 3px;
-    width: calc(50% - 3px); height: calc(100% - 6px);
-    background: #636366; border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    position: absolute; top: 5px; left: 5px;
+    width: calc(50% - 5px); height: calc(100% - 10px);
+    background: var(--toggle-slider); border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     transition: transform 0.25s ease;
   }
   .toggle-slider.right {
     transform: translateX(100%);
   }
 
+  .btn-fixed-wrap {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+  }
+  .btn-fixed-spacer {
+    height: calc(60px + env(safe-area-inset-bottom));
+  }
   .btn {
     display: block; width: 100%; padding: 16px;
-    background: #3182F6; color: #fff;
-    border: none; border-radius: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    background: var(--text); color: var(--bg);
+    border: none; border-radius: 0;
     font-size: 16px; font-weight: 700; font-family: inherit;
     cursor: pointer; transition: transform 0.1s, opacity 0.2s;
     letter-spacing: -0.2px;
   }
-  .btn:active { transform: scale(0.98); opacity: 0.9; }
+
 
   .error-msg {
-    background: rgba(255,59,48,0.15); color: #FF6961; padding: 12px 16px;
-    border-radius: 14px; margin-bottom: 12px; display: none;
+    background: var(--error-bg); color: var(--error-text); padding: 12px 16px;
+    border-radius: 14px; margin-bottom: 0; display: none;
     font-size: 14px; font-weight: 500;
+    overflow: hidden;
+  }
+  .error-msg.showing {
+    display: block;
+    animation: errorSlideIn 0.35s ease forwards;
+  }
+  .error-msg.hiding {
+    animation: errorSlideOut 0.25s ease forwards;
+  }
+  @keyframes errorSlideIn {
+    0% { opacity: 0; margin-top: 0; max-height: 0; padding: 0 16px; }
+    100% { opacity: 1; margin-top: 12px; max-height: 60px; padding: 12px 16px; }
+  }
+  @keyframes errorSlideOut {
+    0% { opacity: 1; margin-top: 12px; max-height: 60px; padding: 12px 16px; }
+    40% { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 0; margin-top: 0; max-height: 0; padding: 0 16px; }
   }
 
   /* Results */
@@ -171,12 +276,12 @@
     border-radius: 20px; overflow: hidden;
     padding: 20px 20px 16px;
   }
-  .game-card:nth-child(3n+1) { background: #2C2C30; }
-  .game-card:nth-child(3n+2) { background: #2D2A1F; }
-  .game-card:nth-child(3n+3) { background: #1F2D28; }
+  .game-card:nth-child(3n+1) { background: var(--game-card-1); }
+  .game-card:nth-child(3n+2) { background: var(--game-card-2); }
+  .game-card:nth-child(3n+3) { background: var(--game-card-3); }
 
   .game-title {
-    font-size: 22px; font-weight: 800; color: #fff;
+    font-size: 22px; font-weight: 800; color: var(--text);
     margin-bottom: 16px; letter-spacing: -0.2px;
   }
 
@@ -188,10 +293,10 @@
     border-radius: 10px; font-size: 12px; font-weight: 700;
     margin-bottom: 8px; letter-spacing: -0.2px;
   }
-  .court-type-badge.mens { background: rgba(49,130,246,0.2); color: #6AADFF; }
-  .court-type-badge.womens { background: rgba(236,72,153,0.2); color: #F472B6; }
-  .court-type-badge.mixed { background: rgba(139,92,246,0.2); color: #A78BFA; }
-  .court-type-badge.rest { background: rgba(142,142,147,0.15); color: #8E8E93; }
+  .court-type-badge.mens { background: var(--court-mens-bg); color: var(--court-mens-text); }
+  .court-type-badge.womens { background: var(--court-womens-bg); color: var(--court-womens-text); }
+  .court-type-badge.mixed { background: var(--court-mixed-bg); color: var(--court-mixed-text); }
+  .court-type-badge.rest { background: var(--court-rest-bg); color: var(--court-rest-text); }
 
   .player-list {
     display: flex; flex-wrap: wrap; gap: 6px;
@@ -202,18 +307,18 @@
     font-size: 14px; font-weight: 600;
     letter-spacing: -0.2px;
   }
-  .player-chip.male { background: rgba(49,130,246,0.15); color: #6AADFF; }
-  .player-chip.female { background: rgba(236,72,153,0.15); color: #F472B6; }
-  .player-chip.rest-male { background: rgba(142,142,147,0.1); color: #636366; }
-  .player-chip.rest-female { background: rgba(142,142,147,0.1); color: #636366; }
+  .player-chip.male { background: var(--chip-male-bg); color: var(--chip-male-text); }
+  .player-chip.female { background: var(--chip-female-bg); color: var(--chip-female-text); }
+  .player-chip.rest-male { background: var(--chip-rest-bg); color: var(--chip-rest-text); }
+  .player-chip.rest-female { background: var(--chip-rest-bg); color: var(--chip-rest-text); }
 
   /* Summary */
   .summary-card {
-    background: #2C2C30; border-radius: 20px;
+    background: var(--card); border-radius: 20px;
     padding: 20px;
   }
   .stat-group-label {
-    font-size: 13px; font-weight: 600; color: #8E8E93;
+    font-size: 13px; font-weight: 600; color: var(--text-muted);
     margin-bottom: 8px; letter-spacing: -0.2px;
   }
   .stat-group-label + .stat-tags { margin-bottom: 16px; }
@@ -224,17 +329,17 @@
   .stat-tag {
     display: flex; align-items: center; gap: 8px;
     padding: 8px 12px 8px 16px; border-radius: 999px;
-    font-size: 14px; font-weight: 500; color: #E5E5EA;
+    font-size: 14px; font-weight: 500; color: var(--tag-text);
     letter-spacing: -0.2px;
-    background: #48484a90;
+    background: var(--tag-bg);
   }
   .stat-badge {
     display: flex; align-items: center; justify-content: center;
     width: 22px; height: 22px; border-radius: 50%;
     font-size: 12px; font-weight: 700;
   }
-  .stat-badge.play { background: rgba(49,130,246,0.25); color: #6AADFF; }
-  .stat-badge.rest { background: rgba(255,59,48,0.25); color: #FF6961; }
+  .stat-badge.play { background: var(--badge-play-bg); color: var(--badge-play-text); }
+  .stat-badge.rest { background: var(--badge-rest-bg); color: var(--badge-rest-text); }
 
   /* Divider */
   .section-divider {
@@ -242,22 +347,22 @@
     margin: 24px 0 16px; padding: 0 4px;
   }
   .section-divider span {
-    font-size: 13px; font-weight: 600; color: #636366;
+    font-size: 13px; font-weight: 600; color: var(--placeholder);
     text-transform: uppercase; letter-spacing: -0.2px; white-space: nowrap;
   }
   .section-divider::before, .section-divider::after {
-    content: ''; flex: 1; height: 1px; background: #3A3A3C;
+    content: ''; flex: 1; height: 1px; background: var(--divider);
   }
 
   /* Action bar */
   .action-bar {
-    display: none; gap: 8px; margin-bottom: 12px; margin-top: 0;
+    display: none; gap: 8px; margin-top: 8px; margin-bottom: 0;
   }
   .action-bar.visible { display: flex; }
   .btn-action {
     display: flex; align-items: center; gap: 6px; flex: 1;
     justify-content: center;
-    padding: 0 16px; height: 44px; background: #2C2C30; color: #fff;
+    padding: 0 16px; height: 44px; background: var(--btn-action-bg); color: var(--btn-action-text);
     border: none; border-radius: 14px;
     font-size: 14px; font-weight: 600; font-family: inherit;
     cursor: pointer; transition: transform 0.1s, box-shadow 0.2s;
@@ -266,66 +371,119 @@
   }
   .btn-action:active { transform: scale(0.96); }
   .btn-action svg { width: 16px; height: 16px; }
-  .btn-action.copied { background: #34C759; color: #fff; }
+  .btn-action.copied { background: #34C759; color: #ffffff; }
 
   /* Text result */
   .text-result {
-    background: #2C2C30; border-radius: 20px; padding: 20px;
-    margin-bottom: 12px;
+    background: var(--card); border-radius: 20px; padding: 20px;
+    margin-bottom: 8px;
     white-space: pre-wrap; font-size: 14px; line-height: 1.8;
-    font-family: inherit; color: #fff;
+    font-family: inherit; color: var(--text);
     letter-spacing: -0.2px;
   }
-  .text-result .game-block { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid #3A3A3C; }
+  .text-result .game-block { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--divider); }
   .text-result .game-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
   .text-result .game-label {
     font-size: 16px; font-weight: 800; margin-bottom: 4px;
-    letter-spacing: -0.2px; color: #fff;
+    letter-spacing: -0.2px; color: var(--text);
   }
   .text-result .court-line {
-    font-size: 14px; font-weight: 500; color: #E5E5EA;
+    font-size: 14px; font-weight: 500; color: var(--text-secondary);
     padding-left: 2px;
   }
+
+  /* Page transitions */
+  #inputSection.slide-out {
+    animation: slideOutLeft 0.35s ease forwards;
+  }
+  #resultSection.slide-in {
+    animation: slideInRight 0.35s ease forwards;
+  }
+  #resultSection.slide-out {
+    animation: slideOutRight 0.35s ease forwards;
+  }
+  #inputSection.slide-in {
+    animation: slideInLeft 0.35s ease forwards;
+  }
+  @keyframes slideOutLeft {
+    0% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(-60px); }
+  }
+  @keyframes slideInRight {
+    0% { opacity: 0; transform: translateX(60px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideOutRight {
+    0% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(60px); }
+  }
+  @keyframes slideInLeft {
+    0% { opacity: 0; transform: translateX(-60px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Light mode card shadows */
+  html.light .card,
+  html.light .summary-card,
+  html.light .text-result,
+  html.light .btn-action {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+  }
+  html.light .game-card {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+  }
 </style>
+<script>if(localStorage.getItem('theme')!=='dark')document.documentElement.classList.add('light');</script>
 </head>
 <body>
 <div class="container">
 
   <div class="header">
-    <h1>Tennis Game Matching</h1>
+    <div class="header-left">
+      <svg width="105" height="32" viewBox="0 0 302 92" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_4635_6820)"><path d="M184.799 32.83C184.799 16.49 180.869 0 159.799 0C140.869 0 134.809 13.82 134.809 16.34V3.61H101.679V54.16H68.4492C68.4492 66.03 75.8392 72.23 84.5192 72.23C90.5392 72.23 96.4992 69.24 98.7192 63.44H101.679V89.58H134.809V38.13C134.809 30.43 138.199 26.12 144.449 26.12C149.019 26.12 151.769 29.63 151.769 37.02V89.58H184.799V32.83Z"/><path d="M35.31 46.6C35.31 29.07 44.65 13.75 58.56 5.48999V3.60999H0V37.76H19.83V89.58H58.56V87.7C44.65 79.43 35.31 64.12 35.31 46.59V46.6Z"/><path d="M69.7891 37.7599H94.0691C94.0691 27.0499 89.2991 21.45 81.9291 21.45C74.5591 21.45 69.7891 27.0499 69.7891 37.7599Z"/><path d="M226.51 89.53H193.67V41.29C193.67 41.29 200.18 43.19 210.09 43.19C220 43.19 226.51 41.29 226.51 41.29V89.53Z"/><path d="M260.339 26.25C260.339 24.19 262.399 22.3 265.889 22.3C274.559 22.3 273.609 30.1 273.609 30.1H300.169C300.169 20.63 297.399 0 266.649 0C238.599 0 232.939 17.42 232.939 28.54C232.939 43.81 243.579 50.88 250.549 53.75C266.869 60.47 275.209 59.25 275.209 65.12C275.209 67.41 272.889 69.6 268.029 69.6C258.219 69.6 257.829 60.14 257.829 60.13H231.249C230.339 69.72 234.459 91.74 265.739 91.74C297.019 91.74 302.009 74.88 302.009 62.62C302.009 32.5 260.349 37.04 260.349 26.24L260.339 26.25Z"/><path d="M210.091 36.42C220.148 36.42 228.301 28.2671 228.301 18.21C228.301 8.15289 220.148 0 210.091 0C200.034 0 191.881 8.15289 191.881 18.21C191.881 28.2671 200.034 36.42 210.091 36.42Z"/></g><defs><clipPath id="clip0_4635_6820"><rect width="302" height="91.75" fill="white"/></clipPath></defs></svg>
+      <h1>Tennis Game Matching</h1>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+      <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text)"><circle cx="12" cy="12" r="5.5"/><rect x="11" y="0.5" width="2" height="3" rx="1"/><rect x="11" y="20.5" width="2" height="3" rx="1"/><rect x="20.5" y="11" width="3" height="2" rx="1"/><rect x="0.5" y="11" width="3" height="2" rx="1"/><rect x="17.25" y="3.87" width="2" height="3" rx="1" transform="rotate(45 18.25 5.37)"/><rect x="4.75" y="17.13" width="2" height="3" rx="1" transform="rotate(45 5.75 18.63)"/><rect x="17.13" y="17.25" width="3" height="2" rx="1" transform="rotate(45 18.63 18.25)"/><rect x="3.87" y="4.75" width="3" height="2" rx="1" transform="rotate(45 5.37 5.75)"/></svg>
+      <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text)"><path d="M21.75 15.5a9.72 9.72 0 0 1-3.36.6C12.77 16.1 8.4 11.73 8.4 6.11c0-1.2.22-2.34.6-3.4A9.5 9.5 0 0 0 2.5 11.5 9.5 9.5 0 0 0 12 21a9.5 9.5 0 0 0 9.75-5.5z"/></svg>
+      <div class="toggle-thumb"></div>
+    </button>
   </div>
 
-  <div class="section-title">남자 참가자</div>
+  <div id="inputSection">
   <div class="card">
+    <div class="section-title-inner">남자 참가자</div>
     <div class="tag-container" id="maleTagContainer" onclick="this.querySelector('.tag-input').focus()">
       <input class="tag-input" id="maleInput" placeholder="이름 입력 후 엔터" data-gender="male">
     </div>
+    <div class="error-msg" id="maleError"></div>
   </div>
 
-  <div class="section-title">여자 참가자</div>
   <div class="card">
+    <div class="section-title-inner">여자 참가자</div>
     <div class="tag-container" id="femaleTagContainer" onclick="this.querySelector('.tag-input').focus()">
       <input class="tag-input" id="femaleInput" placeholder="이름 입력 후 엔터" data-gender="female">
     </div>
+    <div class="error-msg" id="femaleError"></div>
   </div>
 
-  <div class="section-title">게임 설정</div>
   <div class="card">
+    <div class="section-title-inner">게임 설정</div>
     <div class="form-row form-row-3">
       <div class="form-group" style="margin-bottom:0;">
         <label class="form-label">코트 수</label>
         <div class="stepper">
-          <button class="stepper-btn" onclick="stepValue('courtCount',-1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M8 2L2 8L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+          <button class="stepper-btn" onclick="stepValue('courtCount',-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           <input class="form-input stepper-input" type="number" id="courtCount" value="2" min="1" max="10">
-          <button class="stepper-btn" onclick="stepValue('courtCount',1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M2 2L8 8L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+          <button class="stepper-btn" onclick="stepValue('courtCount',1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
         </div>
       </div>
       <div class="form-group" style="margin-bottom:0;">
         <label class="form-label">게임 수</label>
         <div class="stepper">
-          <button class="stepper-btn" onclick="stepValue('gameCount',-1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M8 2L2 8L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+          <button class="stepper-btn" onclick="stepValue('gameCount',-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
           <input class="form-input stepper-input" type="number" id="gameCount" value="6" min="1" max="50">
-          <button class="stepper-btn" onclick="stepValue('gameCount',1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M2 2L8 8L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+          <button class="stepper-btn" onclick="stepValue('gameCount',1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
         </div>
       </div>
       <div class="form-group" style="margin-bottom:0;">
@@ -338,24 +496,37 @@
         <input type="hidden" id="mixedStart" value="0">
       </div>
     </div>
-    <div class="error-msg" id="errorMsg"></div>
+    <div class="error-msg" id="generalError"></div>
   </div>
-  <button class="btn" style="margin-top:20px; margin-bottom:12px;" onclick="generateGames()">게임 생성</button>
+  </div>
 
+  <div id="resultSection" style="display:none;">
+  <div id="results"></div>
   <div class="action-bar" id="actionBar">
     <button class="btn-action" onclick="refreshGames()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
       다시 섞기
     </button>
-    <button class="btn-action" id="copyBtn" onclick="copyResult()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      복사하기
+    <button class="btn-action" id="shareBtn" onclick="shareResult()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      공유하기
     </button>
   </div>
-  <div id="results"></div>
+  </div>
+  <div class="btn-fixed-spacer"></div>
+</div>
+
+<div class="btn-fixed-wrap">
+  <button class="btn" id="mainBtn" onclick="handleMainBtn()">게임 생성</button>
 </div>
 
 <script>
+// Theme toggle
+function toggleTheme() {
+  document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');
+}
+
 // Tag input system
 function createTag(container, name, gender) {
   name = name.trim();
@@ -370,6 +541,22 @@ function createTag(container, name, gender) {
 
 function removeTag(btn) {
   btn.closest('.tag').remove();
+  validateFields();
+}
+
+function checkFieldError(gender) {
+  const id = gender === 'male' ? 'maleError' : 'femaleError';
+  const containerId = gender === 'male' ? 'maleTagContainer' : 'femaleTagContainer';
+  const el = document.getElementById(id);
+  if (el.style.display === 'block' && getTagNames(containerId).length >= 2) {
+    el.classList.remove('showing');
+    el.classList.add('hiding');
+    el.addEventListener('animationend', () => {
+      el.style.display = 'none';
+      el.textContent = '';
+      el.classList.remove('hiding');
+    }, { once: true });
+  }
 }
 
 function getTagNames(containerId) {
@@ -610,6 +797,7 @@ createTag = function(container, name, gender) {
   const input = container.querySelector('.tag-input');
   const tag = input.previousElementSibling;
   if (tag && tag.classList.contains('tag')) initDrag(tag);
+  validateFields();
 };
 
 
@@ -619,12 +807,12 @@ function stepValue(id, delta) {
   const min = parseInt(input.min);
   const max = parseInt(input.max);
   if (val >= min && val <= max) input.value = val;
+  validateFields();
 }
 
 function generateGames() {
-  const errorEl = document.getElementById('errorMsg');
   const resultsEl = document.getElementById('results');
-  errorEl.style.display = 'none';
+  clearErrors();
   resultsEl.innerHTML = '';
 
   const maleRaw = getTagNames('maleTagContainer');
@@ -639,9 +827,13 @@ function generateGames() {
   const totalPlayers = males.length + females.length;
   const playersPerRound = courts * 4;
 
-  if (males.length < 2) return showError('남자 참가자를 최소 2명 이상 입력하세요.');
-  if (females.length < 2) return showError('여자 참가자를 최소 2명 이상 입력하세요.');
-  if (totalPlayers < playersPerRound) return showError(`코트 ${courts}개에 최소 ${playersPerRound}명이 필요합니다. (현재 ${totalPlayers}명)`);
+  if (males.length < 2) return showError('최소 2명 이상 입력하세요.', 'male');
+  if (females.length < 2) return showError('최소 2명 이상 입력하세요.', 'female');
+  if (totalPlayers < playersPerRound) {
+    showError(`코트 ${courts}개에 최소 ${playersPerRound}명이 필요합니다. (현재 ${totalPlayers}명)`, 'male');
+    showError(`코트 ${courts}개에 최소 ${playersPerRound}명이 필요합니다. (현재 ${totalPlayers}명)`, 'female');
+    return;
+  }
   if (courts < 1 || games < 1) return showError('코트 개수와 게임 수는 1 이상이어야 합니다.');
 
   const allPlayers = [
@@ -761,7 +953,6 @@ function generateGames() {
       if (mixedStart) {
         comboPool = [Array(courts).fill('mixed')];
       } else {
-        // Force mens + womens (one each if 2 courts, alternate if more)
         const forced = [];
         for (let c = 0; c < courts; c++) forced.push(c % 2 === 0 ? 'mens' : 'womens');
         comboPool = [forced];
@@ -775,7 +966,6 @@ function generateGames() {
         else if (t === 'womens') fNeeded += 4;
         else { mNeeded += 2; fNeeded += 2; }
       }
-      // Feasibility: enough players of each gender
       if (mNeeded > malePlayers.length || fNeeded > femalePlayers.length) continue;
 
       const mRestCount = malePlayers.length - mNeeded;
@@ -783,44 +973,39 @@ function generateGames() {
       if (mRestCount < 0 || fRestCount < 0) continue;
       if (mRestCount + fRestCount !== restNeeded) continue;
 
-      // Pick who would rest with this combo
       const mRest = pickRestCandidates(malePlayers, mRestCount, g);
       const fRest = pickRestCandidates(femalePlayers, fRestCount, g);
 
-      // Check consecutive rest constraint
       const consecutiveRests = [...mRest, ...fRest].filter(p => lastRested[p.name] === g - 1).length;
 
-      // Score: 50/50 ratio (primary) + rest balance (secondary) + consecutive penalty
       const comboTypeCount = { mens: 0, womens: 0, mixed: 0 };
       combo.forEach(t => comboTypeCount[t]++);
       let score = 0;
       if (g >= 1) {
-        // Simulate cumulative type counts after this combo
         const simMixed = typeUsed.mixed + comboTypeCount.mixed;
         const simMens = typeUsed.mens + comboTypeCount.mens;
         const simWomens = typeUsed.womens + comboTypeCount.womens;
         const simTotal = simMixed + simMens + simWomens;
 
-        // Primary: cumulative mixed ratio should approach 50%
-        const mixedRatio = simMixed / simTotal;
-        score += Math.abs(mixedRatio - 0.5) * 200;
+        // Primary: rest balance across ALL players (gender-agnostic)
+        score += restBalanceScore(mRest, fRest) * 100;
 
-        // Secondary: mens and womens should be balanced within non-mixed
+        // Secondary: cumulative mixed ratio should approach 50%
+        const mixedRatio = simMixed / simTotal;
+        score += Math.abs(mixedRatio - 0.5) * 80;
+
+        // Tertiary: mens and womens should be balanced within non-mixed
         const nonMixed = simMens + simWomens;
         if (nonMixed > 0) {
           const mensRatio = simMens / nonMixed;
-          score += Math.abs(mensRatio - 0.5) * 50;
+          score += Math.abs(mensRatio - 0.5) * 20;
         }
-
-        // Tertiary: rest balance
-        score += restBalanceScore(mRest, fRest);
       } else {
-        score += restBalanceScore(mRest, fRest);
+        score += restBalanceScore(mRest, fRest) * 100;
         for (const t of ['mens', 'womens', 'mixed']) {
           score += (typeUsed[t] + comboTypeCount[t]) * 0.01;
         }
       }
-      // Heavy penalty for consecutive rest
       score += consecutiveRests * 1000;
 
       if (score < bestScore) {
@@ -902,7 +1087,7 @@ function generateGames() {
   window._lastResult = plainText.trim();
 
   // Render as styled text
-  let html = '<div class="section-title">게임 결과</div><div class="text-result">';
+  let html = '<div class="text-result"><div class="section-title-inner">게임 결과</div>';
   for (const round of schedule) {
     html += `<div class="game-block">`;
     html += `<div class="game-label">게임 ${round.round}</div>`;
@@ -918,8 +1103,8 @@ function generateGames() {
   html += '</div>';
 
   // Summary
-  html += `<div class="section-title">참가자 통계</div>`;
   html += `<div class="summary-card">`;
+  html += `<div class="section-title-inner">참가자 통계</div>`;
   html += `<div class="stat-group-label">남자 참가자</div>`;
   html += `<div class="stat-tags">`;
   allPlayers.filter(p => p.gender === 'M').forEach(p => {
@@ -944,7 +1129,11 @@ function generateGames() {
   resultsEl.innerHTML = html;
 
   document.getElementById('actionBar').classList.add('visible');
-  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!isResultView) {
+    showResultView();
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 function toggleStartType() {
@@ -969,23 +1158,138 @@ function refreshGames() {
   generateGames();
 }
 
-function copyResult() {
+function shareResult() {
   if (!window._lastResult) return;
-  navigator.clipboard.writeText(window._lastResult).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.classList.add('copied');
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 복사됨';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 복사하기';
-    }, 1500);
-  });
+  if (navigator.share) {
+    navigator.share({
+      title: '테니스 게임 매칭',
+      text: window._lastResult
+    }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(window._lastResult).then(() => {
+      const btn = document.getElementById('shareBtn');
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 복사됨';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> 공유하기';
+      }, 1500);
+    });
+  }
 }
 
-function showError(msg) {
-  const el = document.getElementById('errorMsg');
+function clearErrors() {
+  document.querySelectorAll('.error-msg').forEach(el => {
+    if (el.style.display === 'block') {
+      el.classList.remove('showing');
+      el.classList.add('hiding');
+      el.addEventListener('animationend', () => {
+        el.style.display = 'none';
+        el.textContent = '';
+        el.classList.remove('hiding');
+      }, { once: true });
+    }
+  });
+}
+function showError(msg, target) {
+  const id = target === 'male' ? 'maleError' : target === 'female' ? 'femaleError' : 'generalError';
+  const el = document.getElementById(id);
+  if (el.style.display === 'block' && el.textContent === msg) return;
   el.textContent = msg;
+  el.classList.remove('hiding');
   el.style.display = 'block';
+  el.classList.add('showing');
+}
+function hideError(target) {
+  const id = target === 'male' ? 'maleError' : target === 'female' ? 'femaleError' : 'generalError';
+  const el = document.getElementById(id);
+  if (el.style.display !== 'block' || el.classList.contains('hiding')) return;
+  el.classList.remove('showing');
+  el.classList.add('hiding');
+  el.addEventListener('animationend', () => {
+    el.style.display = 'none';
+    el.textContent = '';
+    el.classList.remove('hiding');
+  }, { once: true });
+}
+function validateFields() {
+  const males = getTagNames('maleTagContainer');
+  const females = getTagNames('femaleTagContainer');
+  const courts = parseInt(document.getElementById('courtCount').value);
+  const total = males.length + females.length;
+  const needed = courts * 4;
+
+  // 아직 입력되지 않은 필드는 얼럿 노출하지 않음
+  if (males.length === 0) { hideError('male'); }
+  else if (males.length < 2) { showError('최소 2명 이상 입력하세요.', 'male'); }
+  else { hideError('male'); }
+
+  if (females.length === 0) { hideError('female'); }
+  else if (females.length < 2) { showError('최소 2명 이상 입력하세요.', 'female'); }
+  else { hideError('female'); }
+
+  if (males.length >= 2 && females.length >= 2 && total < needed) {
+    const msg = `코트 ${courts}개에 최소 ${needed}명이 필요합니다. (현재 ${total}명)`;
+    showError(msg, 'male');
+    showError(msg, 'female');
+  } else if (males.length >= 2 && females.length >= 2) {
+    hideError('male');
+    hideError('female');
+  }
+}
+
+let isResultView = false;
+
+function handleMainBtn() {
+  if (isResultView) {
+    goBackToInput();
+  } else {
+    generateGames();
+  }
+}
+
+function showResultView() {
+  const inputSection = document.getElementById('inputSection');
+  const resultSection = document.getElementById('resultSection');
+  const btn = document.getElementById('mainBtn');
+
+  window.scrollTo({ top: 0 });
+  inputSection.classList.remove('slide-in');
+  inputSection.classList.add('slide-out');
+
+  inputSection.addEventListener('animationend', () => {
+    inputSection.style.display = 'none';
+    inputSection.classList.remove('slide-out');
+
+    resultSection.style.display = 'block';
+    resultSection.classList.remove('slide-out');
+    resultSection.classList.add('slide-in');
+  }, { once: true });
+
+  btn.textContent = '새로운 게임 생성';
+  isResultView = true;
+}
+
+function goBackToInput() {
+  const inputSection = document.getElementById('inputSection');
+  const resultSection = document.getElementById('resultSection');
+  const btn = document.getElementById('mainBtn');
+
+  window.scrollTo({ top: 0 });
+  resultSection.classList.remove('slide-in');
+  resultSection.classList.add('slide-out');
+
+  resultSection.addEventListener('animationend', () => {
+    resultSection.style.display = 'none';
+    resultSection.classList.remove('slide-out');
+
+    inputSection.style.display = 'block';
+    inputSection.classList.remove('slide-out');
+    inputSection.classList.add('slide-in');
+  }, { once: true });
+
+  btn.textContent = '게임 생성';
+  isResultView = false;
 }
 </script>
 </body>
