@@ -22,8 +22,8 @@
     --placeholder: #636366; --placeholder-tag: #8E8E93;
     /* Surface */
     --card: #16171B; --input: #16171B; --input-hover: #48484A;
-    --divider: #2C2E36; --tag-bg: #2C2E36; --tag-remove: #636366;
-    --toggle-bg: #2C2E36; --toggle-slider: #16171B;
+    --divider: #2C2E36;
+    --toggle-bg: #2C2E36;
     /* Button */
     --btn-action-bg: #FFFFFF; --btn-action-text: #000000;
     /* Alpha */
@@ -35,18 +35,18 @@
     /* Accent */
     --blue: #3182F6; --pink: #E0458E; --purple: #7957FF; --red: #F04452;
     /* Text */
-    --bg: #F3F4F6; --text: #16181B; --text-secondary: #333D4B; --text-muted: #8B95A1;
+    --bg: #F3F4F6; --text: #16181B; --text-secondary: #16181B; --text-muted: #8B95A1;
     --placeholder: #B0B8C1; --placeholder-tag: #B0B8C1;
     /* Surface */
     --card: #FFFFFF; --input: #F0F1F3; --input-hover: #F0F0F1;
-    --divider: #F0F0F1; --tag-bg: #F0F0F1; --tag-remove: #B0B8C1;
-    --toggle-bg: #F0F1F3; --toggle-slider: #FFFFFF;
+    --divider: #F0F0F1;
+    --toggle-bg: #F0F1F3;
     /* Button */
-    --btn-action-bg: #FFFFFF; --btn-action-text: #333D4B;
+    --btn-action-bg: #FFFFFF; --btn-action-text: #16181B;
     /* Alpha */
     --badge-play-bg: rgba(49,130,246,0.12); --badge-rest-bg: rgba(255,72,72,0.12);
     --error-bg: rgba(240,68,82,0.08);
-    --stepper-text: #333D4B; --stepper-bg: #F0F1F3;
+    --stepper-text: #16181B; --stepper-bg: #F0F1F3;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { overflow: hidden; height: 100svh; overscroll-behavior: none; }
@@ -146,7 +146,7 @@
     font-size: 14px; font-weight: 500;
     letter-spacing: -0.2px;
     cursor: grab; user-select: none;
-    background: var(--tag-bg);
+    background: var(--divider);
   }
   .tag:active { cursor: grabbing; }
   .tag.dragging { opacity: 0.2; transform: scale(0.95); pointer-events: none; transition: opacity 0.2s, transform 0.2s; }
@@ -158,7 +158,7 @@
   .tag .tag-remove {
     display: flex; align-items: center; justify-content: center;
     width: 20px; height: 20px;
-    border: none; background: var(--tag-remove); padding: 0;
+    border: none; background: var(--placeholder); padding: 0;
     cursor: pointer; border-radius: 50%;
     transition: background 0.15s;
     color: #ffffff; -webkit-appearance: none; appearance: none;
@@ -221,7 +221,7 @@
   .toggle-slider {
     position: absolute; top: 5px; left: 5px;
     width: calc(50% - 5px); height: calc(100% - 10px);
-    background: var(--toggle-slider); border-radius: 10px;
+    background: var(--card); border-radius: 10px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     transition: transform 0.25s ease;
   }
