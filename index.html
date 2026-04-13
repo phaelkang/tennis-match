@@ -27,7 +27,7 @@
 
   /* Section Title */
   .section-title {
-    font-size: 16px; font-weight: 800; color: #fff;
+    font-size: 16px; font-weight: 600; color: #fff;
     padding: 16px 0 8px; letter-spacing: -0.5px;
   }
 
@@ -64,13 +64,11 @@
     padding: 8px 12px 8px 16px; border-radius: 999px;
     font-size: 14px; font-weight: 500;
     letter-spacing: -0.2px;
-    animation: tagIn 0.15s ease;
     cursor: grab; user-select: none;
-    transition: opacity 0.15s, transform 0.15s;
     background: #48484a90;
   }
   .tag:active { cursor: grabbing; }
-  .tag.dragging { opacity: 0.3; transform: scale(0.95); }
+  .tag.dragging { opacity: 0.3; transform: scale(0.95); pointer-events: none; }
   @keyframes tagIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
@@ -214,6 +212,12 @@
     background: #2C2C30; border-radius: 20px;
     padding: 20px; margin-top: 4px;
   }
+  .stat-group-label {
+    font-size: 13px; font-weight: 600; color: #8E8E93;
+    margin-bottom: 8px; letter-spacing: 0.5px;
+  }
+  .stat-group-label + .stat-tags { margin-bottom: 16px; }
+  .stat-group-label + .stat-tags:last-child { margin-bottom: 0; }
   .stat-tags {
     display: flex; flex-wrap: wrap; gap: 8px;
   }
@@ -275,7 +279,7 @@
   .text-result .game-block { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid #3A3A3C; }
   .text-result .game-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
   .text-result .game-label {
-    font-size: 17px; font-weight: 800; margin-bottom: 4px;
+    font-size: 16px; font-weight: 800; margin-bottom: 4px;
     letter-spacing: -0.3px; color: #fff;
   }
   .text-result .court-line {
@@ -378,6 +382,7 @@ function handleTagInput(e) {
   const container = input.closest('.tag-container');
   const gender = input.dataset.gender;
 
+  if (e.isComposing) return;
   if (e.key === 'Enter' || e.key === ',') {
     e.preventDefault();
     const val = input.value.replace(',', '').trim();
@@ -411,6 +416,7 @@ document.getElementById('femaleInput').addEventListener('paste', handleTagPaste)
 // Drag & drop reorder
 let dragTag = null;
 let isAnimating = false;
+let lastSwapTime = 0;
 
 function flipAnimate(container, skipTag) {
   const tags = [...container.querySelectorAll('.tag')];
@@ -450,34 +456,70 @@ function initDrag(tag) {
   tag.draggable = true;
   tag.addEventListener('dragstart', (e) => {
     dragTag = tag;
-    setTimeout(() => tag.classList.add('dragging'), 0);
+    // Create rounded drag ghost
+    const ghost = tag.cloneNode(true);
+    ghost.style.cssText = `
+      position: absolute; top: -9999px; left: -9999px;
+      border-radius: 999px; background: #48484a90;
+      padding: 8px 12px 8px 16px; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
+      color: #E5E5EA; font-family: inherit;
+    `;
+    document.body.appendChild(ghost);
+    e.dataTransfer.setDragImage(ghost, ghost.offsetWidth / 2, ghost.offsetHeight / 2);
+    setTimeout(() => {
+      tag.classList.add('dragging');
+      document.body.removeChild(ghost);
+    }, 0);
     e.dataTransfer.effectAllowed = 'move';
   });
   tag.addEventListener('dragend', () => {
     tag.classList.remove('dragging');
     dragTag = null;
   });
-  tag.addEventListener('dragover', (e) => {
+}
+
+function initContainer(container) {
+  container.addEventListener('dragover', (e) => {
     e.preventDefault();
-    if (!dragTag || dragTag === tag || isAnimating) return;
-    const container = tag.closest('.tag-container');
-    if (dragTag.closest('.tag-container') !== container) return;
-    const tags = [...container.querySelectorAll('.tag')];
-    const dragIdx = tags.indexOf(dragTag);
-    const hoverIdx = tags.indexOf(tag);
+    if (!dragTag || isAnimating) return;
+    const now = Date.now();
+    if (now - lastSwapTime < 250) return;
+    const tags = [...container.querySelectorAll('.tag:not(.dragging)')];
+    let closest = null;
+    let closestDist = Infinity;
+    for (const t of tags) {
+      const rect = t.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+      if (dist < closestDist) { closestDist = dist; closest = t; }
+    }
+    if (!closest) return;
+    const allTags = [...container.querySelectorAll('.tag')];
+    const dragIdx = allTags.indexOf(dragTag);
+    const hoverIdx = allTags.indexOf(closest);
     if (dragIdx === hoverIdx) return;
+    const rect = closest.getBoundingClientRect();
+    const midX = rect.left + rect.width / 2;
+    if (dragIdx < hoverIdx && e.clientX < midX) return;
+    if (dragIdx > hoverIdx && e.clientX > midX) return;
+    lastSwapTime = now;
     const play = flipAnimate(container, dragTag);
     if (dragIdx < hoverIdx) {
-      tag.after(dragTag);
+      closest.after(dragTag);
     } else {
-      tag.before(dragTag);
+      closest.before(dragTag);
     }
     play();
   });
-  tag.addEventListener('drop', (e) => {
+  container.addEventListener('drop', (e) => {
     e.preventDefault();
   });
 }
+
+initContainer(document.getElementById('maleTagContainer'));
+initContainer(document.getElementById('femaleTagContainer'));
 
 // Patch createTag to enable drag
 const _origCreateTag = createTag;
@@ -488,9 +530,6 @@ createTag = function(container, name, gender) {
   if (tag && tag.classList.contains('tag')) initDrag(tag);
 };
 
-// Initialize default tags
-['홍길동','김철수','박영수','이민호','정우성','송중기'].forEach(n => createTag(document.getElementById('maleTagContainer'), n, 'male'));
-['김영희','이수진','박지연','최유리','한소희','정소민'].forEach(n => createTag(document.getElementById('femaleTagContainer'), n, 'female'));
 
 function stepValue(id, delta) {
   const input = document.getElementById(id);
@@ -777,8 +816,19 @@ function generateGames() {
   // Summary
   html += `<div class="section-title">참가자 통계</div>`;
   html += `<div class="summary-card">`;
+  html += `<div class="stat-group-label">남자 참가자</div>`;
   html += `<div class="stat-tags">`;
-  allPlayers.forEach(p => {
+  allPlayers.filter(p => p.gender === 'M').forEach(p => {
+    html += `<div class="stat-tag">${p.name}<span class="stat-badge play">${playCount[p.name]}</span>`;
+    if (restCount[p.name] > 0) {
+      html += `<span class="stat-badge rest">${restCount[p.name]}</span>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`;
+  html += `<div class="stat-group-label">여자 참가자</div>`;
+  html += `<div class="stat-tags">`;
+  allPlayers.filter(p => p.gender === 'F').forEach(p => {
     html += `<div class="stat-tag">${p.name}<span class="stat-badge play">${playCount[p.name]}</span>`;
     if (restCount[p.name] > 0) {
       html += `<span class="stat-badge rest">${restCount[p.name]}</span>`;
