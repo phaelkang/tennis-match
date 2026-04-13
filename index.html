@@ -9,44 +9,116 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: "Wanted Sans Variable", "Wanted Sans", -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
-    background: #f5f5f5; color: #1a1a1a; min-height: 100vh;
+    background: #1B1B1E; color: #fff; min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
   .container { max-width: 480px; margin: 0 auto; padding: 16px; }
 
   /* Header */
   .header {
-    padding: 24px 0 16px;
+    padding: 8px 0 16px;
     text-align: left;
   }
-  .header-sub { font-size: 14px; font-weight: 500; color: #888; margin-bottom: 4px; }
+  .header-sub { font-size: 14px; font-weight: 500; color: #8E8E93; margin-bottom: 4px; }
   .header h1 {
-    font-size: 24px; font-weight: 800; color: #1a1a1a;
+    font-size: 24px; font-weight: 800; color: #fff;
     line-height: 1.25; letter-spacing: -0.5px;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 16px; font-weight: 800; color: #fff;
+    padding: 16px 0 8px; letter-spacing: -0.5px;
   }
 
   /* Cards */
   .card {
-    background: #fff; border-radius: 20px; padding: 16px;
+    background: #2C2C30; border-radius: 20px; padding: 16px;
     margin-bottom: 12px;
   }
 
   /* Form */
   .form-label {
-    font-size: 13px; font-weight: 600; color: #999;
-    text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 13px; font-weight: 600; color: #8E8E93;
+    letter-spacing: 0.5px;
     margin-bottom: 8px; display: block;
   }
   .form-input {
     width: 100%; padding: 14px 16px; border: none;
-    background: #f5f5f5; border-radius: 14px;
-    font-size: 15px; font-family: inherit; color: #1a1a1a;
+    background: #3A3A3C; border-radius: 14px;
+    font-size: 15px; font-family: inherit; color: #fff;
     transition: background 0.2s;
   }
-  .form-input:focus { outline: none; background: #eeeeee; }
-  .form-input::placeholder { color: #bbb; }
+  .form-input:focus { outline: none; background: #48484A; }
+  .form-input::placeholder { color: #636366; }
   textarea.form-input { resize: none; min-height: 52px; line-height: 1.5; }
-  .hint { font-size: 12px; color: #aaa; margin-top: 6px; padding-left: 2px; }
+  .hint { font-size: 12px; color: #8E8E93; margin-top: 6px; padding-left: 2px; }
+
+  /* Tag Input */
+  .tag-container {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; cursor: text;
+  }
+  .tag {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px 8px 16px; border-radius: 999px;
+    font-size: 14px; font-weight: 500;
+    letter-spacing: -0.2px;
+    animation: tagIn 0.15s ease;
+    cursor: grab; user-select: none;
+    transition: opacity 0.15s, transform 0.15s;
+    background: #48484a90;
+  }
+  .tag:active { cursor: grabbing; }
+  .tag.dragging { opacity: 0.3; transform: scale(0.95); }
+  @keyframes tagIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .tag.male { color: #E5E5EA; }
+  .tag.female { color: #E5E5EA; }
+  .tag .tag-remove {
+    display: flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px;
+    border: none; background: #636366; padding: 0;
+    cursor: pointer; border-radius: 50%;
+    transition: background 0.15s;
+  }
+  .tag .tag-remove svg { stroke: #ffffff; }
+  .tag .tag-remove:hover { background: #8E8E93; }
+  .tag-input {
+    border: none; background: none; outline: none;
+    font-size: 14px; font-weight: 500; font-family: inherit; color: #fff;
+    min-width: 80px; flex: 1;
+    letter-spacing: -0.2px;
+    padding: 14px;
+    height: 36px; line-height: 36px;
+  }
+  .tag-input::placeholder { color: #8E8E93; }
+
+  .stepper {
+    display: flex; align-items: center; gap: 0;
+    background: #3A3A3C; border-radius: 14px; overflow: hidden;
+  }
+  .stepper-btn {
+    width: 40px; height: 46px; border: none; background: none;
+    color: lab(91.64% 0 -0.01); font-size: 22px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    flex-shrink: 0;
+    line-height: 1; padding: 0;
+  }
+  .stepper-btn:active { background: rgba(255,255,255,0.1); }
+  .stepper-input {
+    flex: 1; text-align: center; background: none !important;
+    border-radius: 0 !important; padding: 14px 0 !important;
+    -moz-appearance: textfield;
+    font-feature-settings: "ss01" 1;
+  }
+  .stepper-input::-webkit-outer-spin-button,
+  .stepper-input::-webkit-inner-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
 
   .form-group { margin-bottom: 16px; }
   .form-row { display: flex; gap: 12px; }
@@ -55,22 +127,22 @@
 
   .toggle-wrap {
     display: flex; position: relative;
-    background: #f5f5f5; border-radius: 12px;
+    background: #3A3A3C; border-radius: 12px;
     padding: 3px; cursor: pointer; user-select: none;
     height: 46px;
   }
   .toggle-option {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; color: #999;
+    font-size: 13px; font-weight: 600; color: #636366;
     position: relative; z-index: 1;
     transition: color 0.2s; letter-spacing: -0.2px;
   }
-  .toggle-option.active { color: #1a1a1a; }
+  .toggle-option.active { color: #fff; }
   .toggle-slider {
     position: absolute; top: 3px; left: 3px;
     width: calc(50% - 3px); height: calc(100% - 6px);
-    background: #fff; border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    background: #636366; border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     transition: transform 0.25s ease;
   }
   .toggle-slider.right {
@@ -79,7 +151,7 @@
 
   .btn {
     display: block; width: 100%; padding: 16px;
-    background: #5AC467; color: #fff;
+    background: #3182F6; color: #fff;
     border: none; border-radius: 16px;
     font-size: 16px; font-weight: 700; font-family: inherit;
     cursor: pointer; transition: transform 0.1s, opacity 0.2s;
@@ -88,7 +160,7 @@
   .btn:active { transform: scale(0.98); opacity: 0.9; }
 
   .error-msg {
-    background: #fff0f0; color: #e74c3c; padding: 12px 16px;
+    background: rgba(255,59,48,0.15); color: #FF6961; padding: 12px 16px;
     border-radius: 14px; margin-bottom: 12px; display: none;
     font-size: 14px; font-weight: 500;
   }
@@ -100,12 +172,12 @@
     border-radius: 20px; overflow: hidden;
     padding: 20px 20px 16px;
   }
-  .game-card:nth-child(3n+1) { background: #fff; }
-  .game-card:nth-child(3n+2) { background: #fef9e7; }
-  .game-card:nth-child(3n+3) { background: #e8faf5; }
+  .game-card:nth-child(3n+1) { background: #2C2C30; }
+  .game-card:nth-child(3n+2) { background: #2D2A1F; }
+  .game-card:nth-child(3n+3) { background: #1F2D28; }
 
   .game-title {
-    font-size: 22px; font-weight: 800; color: #1a1a1a;
+    font-size: 22px; font-weight: 800; color: #fff;
     margin-bottom: 16px; letter-spacing: -0.5px;
   }
 
@@ -117,10 +189,10 @@
     border-radius: 10px; font-size: 12px; font-weight: 700;
     margin-bottom: 8px; letter-spacing: -0.2px;
   }
-  .court-type-badge.mens { background: #dbeafe; color: #1e40af; }
-  .court-type-badge.womens { background: #fce7f3; color: #9d174d; }
-  .court-type-badge.mixed { background: #ede9fe; color: #5b21b6; }
-  .court-type-badge.rest { background: #f3f4f6; color: #6b7280; }
+  .court-type-badge.mens { background: rgba(49,130,246,0.2); color: #6AADFF; }
+  .court-type-badge.womens { background: rgba(236,72,153,0.2); color: #F472B6; }
+  .court-type-badge.mixed { background: rgba(139,92,246,0.2); color: #A78BFA; }
+  .court-type-badge.rest { background: rgba(142,142,147,0.15); color: #8E8E93; }
 
   .player-list {
     display: flex; flex-wrap: wrap; gap: 6px;
@@ -131,44 +203,33 @@
     font-size: 14px; font-weight: 600;
     letter-spacing: -0.2px;
   }
-  .player-chip.male { background: #f0f4ff; color: #1e3a8a; }
-  .player-chip.female { background: #fdf2f8; color: #831843; }
-  .player-chip.rest-male { background: #f9fafb; color: #9ca3af; }
-  .player-chip.rest-female { background: #f9fafb; color: #9ca3af; }
+  .player-chip.male { background: rgba(49,130,246,0.15); color: #6AADFF; }
+  .player-chip.female { background: rgba(236,72,153,0.15); color: #F472B6; }
+  .player-chip.rest-male { background: rgba(142,142,147,0.1); color: #636366; }
+  .player-chip.rest-female { background: rgba(142,142,147,0.1); color: #636366; }
 
   /* Summary */
   .summary-card {
-    background: #fff; border-radius: 20px;
+    background: #2C2C30; border-radius: 20px;
     padding: 20px; margin-top: 4px;
   }
-  .summary-title {
-    font-size: 18px; font-weight: 800; color: #1a1a1a;
-    margin-bottom: 16px; letter-spacing: -0.3px;
+  .stat-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
   }
-  .stat-table { width: 100%; border-collapse: collapse; }
-  .stat-table th {
-    font-size: 12px; font-weight: 600; color: #999;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    padding: 8px 8px; text-align: center;
-    border-bottom: 2px solid #f0f0f0;
+  .stat-tag {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px 8px 16px; border-radius: 999px;
+    font-size: 14px; font-weight: 500; color: #E5E5EA;
+    letter-spacing: -0.2px;
+    background: #48484a90;
   }
-  .stat-table td {
-    padding: 10px 8px; text-align: center;
-    font-size: 14px; font-weight: 500; color: #333;
-    border-bottom: 1px solid #f5f5f5;
+  .stat-badge {
+    display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    font-size: 12px; font-weight: 700;
   }
-  .stat-table td:first-child { text-align: left; font-weight: 600; }
-  .stat-table tr:last-child td { border-bottom: none; }
-  .stat-table .gender-m { color: #3b82f6; }
-  .stat-table .gender-f { color: #ec4899; }
-
-  .stat-pill {
-    display: inline-block; min-width: 28px;
-    padding: 3px 8px; border-radius: 8px;
-    font-size: 13px; font-weight: 700; text-align: center;
-  }
-  .stat-pill.play { background: #ecfdf5; color: #059669; }
-  .stat-pill.rest-stat { background: #fef3c7; color: #d97706; }
+  .stat-badge.play { background: rgba(49,130,246,0.25); color: #6AADFF; }
+  .stat-badge.rest { background: rgba(255,59,48,0.25); color: #FF6961; }
 
   /* Divider */
   .section-divider {
@@ -176,48 +237,48 @@
     margin: 24px 0 16px; padding: 0 4px;
   }
   .section-divider span {
-    font-size: 13px; font-weight: 600; color: #bbb;
+    font-size: 13px; font-weight: 600; color: #636366;
     text-transform: uppercase; letter-spacing: 1px; white-space: nowrap;
   }
   .section-divider::before, .section-divider::after {
-    content: ''; flex: 1; height: 1px; background: #e5e5e5;
+    content: ''; flex: 1; height: 1px; background: #3A3A3C;
   }
 
   /* Action bar */
   .action-bar {
-    display: none; gap: 8px; margin-bottom: 12px;
+    display: none; gap: 8px; margin-bottom: 12px; margin-top: 0;
   }
   .action-bar.visible { display: flex; }
   .btn-action {
     display: flex; align-items: center; gap: 6px; flex: 1;
     justify-content: center;
-    padding: 0 16px; height: 44px; background: #fff; color: #1a1a1a;
+    padding: 0 16px; height: 44px; background: #2C2C30; color: #fff;
     border: none; border-radius: 14px;
     font-size: 14px; font-weight: 600; font-family: inherit;
     cursor: pointer; transition: transform 0.1s, box-shadow 0.2s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     letter-spacing: -0.2px;
   }
   .btn-action:active { transform: scale(0.96); }
   .btn-action svg { width: 16px; height: 16px; }
-  .btn-action.copied { background: #059669; color: #fff; }
+  .btn-action.copied { background: #34C759; color: #fff; }
 
   /* Text result */
   .text-result {
-    background: #fff; border-radius: 20px; padding: 20px;
+    background: #2C2C30; border-radius: 20px; padding: 20px;
     margin-bottom: 12px;
     white-space: pre-wrap; font-size: 14px; line-height: 1.8;
-    font-family: inherit; color: #1a1a1a;
+    font-family: inherit; color: #fff;
     letter-spacing: -0.2px;
   }
-  .text-result .game-block { margin-bottom: 16px; }
-  .text-result .game-block:last-child { margin-bottom: 0; }
+  .text-result .game-block { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid #3A3A3C; }
+  .text-result .game-block:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
   .text-result .game-label {
     font-size: 17px; font-weight: 800; margin-bottom: 4px;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.3px; color: #fff;
   }
   .text-result .court-line {
-    font-size: 14px; font-weight: 500; color: #333;
+    font-size: 14px; font-weight: 500; color: #E5E5EA;
     padding-left: 2px;
   }
 </style>
@@ -229,27 +290,40 @@
     <h1>Tennis Game Matching</h1>
   </div>
 
+  <div class="section-title">남자 참가자</div>
   <div class="card">
-    <div class="form-group">
-      <label class="form-label">남자 참가자</label>
-      <textarea class="form-input" id="maleNames" placeholder="홍길동, *김철수, 박영수 ...">홍길동, 김철수, 박영수, 이민호, 정우성, 송중기</textarea>
-      <div class="hint">쉼표(,)로 구분 · 이름 앞에 *를 붙이면 첫 게임 우선 배정</div>
+    <div class="tag-container" id="maleTagContainer" onclick="this.querySelector('.tag-input').focus()">
+      <input class="tag-input" id="maleInput" placeholder="이름 입력 후 엔터" data-gender="male">
     </div>
-    <div class="form-group">
-      <label class="form-label">여자 참가자</label>
-      <textarea class="form-input" id="femaleNames" placeholder="김영희, *이수진, 박지연 ...">김영희, 이수진, 박지연, 최유리, 한소희, 정소민</textarea>
-      <div class="hint">쉼표(,)로 구분 · 이름 앞에 *를 붙이면 첫 게임 우선 배정</div>
+  </div>
+
+  <div class="section-title">여자 참가자</div>
+  <div class="card">
+    <div class="tag-container" id="femaleTagContainer" onclick="this.querySelector('.tag-input').focus()">
+      <input class="tag-input" id="femaleInput" placeholder="이름 입력 후 엔터" data-gender="female">
     </div>
+  </div>
+
+  <div class="section-title">게임 설정</div>
+  <div class="card">
     <div class="form-row form-row-3">
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom:0;">
         <label class="form-label">코트 수</label>
-        <input class="form-input" type="number" id="courtCount" value="2" min="1" max="10">
+        <div class="stepper">
+          <button class="stepper-btn" onclick="stepValue('courtCount',-1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M8 2L2 8L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+          <input class="form-input stepper-input" type="number" id="courtCount" value="2" min="1" max="10">
+          <button class="stepper-btn" onclick="stepValue('courtCount',1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M2 2L8 8L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom:0;">
         <label class="form-label">게임 수</label>
-        <input class="form-input" type="number" id="gameCount" value="6" min="1" max="50">
+        <div class="stepper">
+          <button class="stepper-btn" onclick="stepValue('gameCount',-1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M8 2L2 8L8 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+          <input class="form-input stepper-input" type="number" id="gameCount" value="6" min="1" max="50">
+          <button class="stepper-btn" onclick="stepValue('gameCount',1)"><svg width="10" height="16" viewBox="0 0 10 16"><path d="M2 2L8 8L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></button>
+        </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom:0;">
         <label class="form-label">시작 게임</label>
         <div class="toggle-wrap" id="toggleWrap" onclick="toggleStartType()">
           <div class="toggle-option active" id="optSingle">남/여복</div>
@@ -260,8 +334,8 @@
       </div>
     </div>
     <div class="error-msg" id="errorMsg"></div>
-    <button class="btn" onclick="generateGames()">게임 생성</button>
   </div>
+  <button class="btn" style="margin-top:20px; margin-bottom:12px;" onclick="generateGames()">게임 생성</button>
 
   <div class="action-bar" id="actionBar">
     <button class="btn-action" onclick="refreshGames()">
@@ -277,22 +351,168 @@
 </div>
 
 <script>
+// Tag input system
+function createTag(container, name, gender) {
+  name = name.trim();
+  if (!name) return;
+  const tag = document.createElement('span');
+  tag.className = 'tag ' + gender;
+  tag.dataset.name = name;
+  tag.innerHTML = `${name}<button class="tag-remove" onclick="removeTag(this)"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2.5 2.5L7.5 7.5M7.5 2.5L2.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>`;
+  const input = container.querySelector('.tag-input');
+  container.insertBefore(tag, input);
+}
+
+function removeTag(btn) {
+  btn.closest('.tag').remove();
+}
+
+function getTagNames(containerId) {
+  return Array.from(document.getElementById(containerId).querySelectorAll('.tag'))
+    .map(t => t.dataset.name);
+}
+
+function handleTagInput(e) {
+  const input = e.target;
+  const container = input.closest('.tag-container');
+  const gender = input.dataset.gender;
+
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = input.value.replace(',', '').trim();
+    if (val) {
+      createTag(container, val, gender);
+      input.value = '';
+    }
+  }
+  if (e.key === 'Backspace' && input.value === '') {
+    const tags = container.querySelectorAll('.tag');
+    if (tags.length > 0) tags[tags.length - 1].remove();
+  }
+}
+
+function handleTagPaste(e) {
+  e.preventDefault();
+  const input = e.target;
+  const container = input.closest('.tag-container');
+  const gender = input.dataset.gender;
+  const text = (e.clipboardData || window.clipboardData).getData('text');
+  text.split(',').map(s => s.trim()).filter(Boolean).forEach(name => {
+    createTag(container, name, gender);
+  });
+}
+
+document.getElementById('maleInput').addEventListener('keydown', handleTagInput);
+document.getElementById('maleInput').addEventListener('paste', handleTagPaste);
+document.getElementById('femaleInput').addEventListener('keydown', handleTagInput);
+document.getElementById('femaleInput').addEventListener('paste', handleTagPaste);
+
+// Drag & drop reorder
+let dragTag = null;
+let isAnimating = false;
+
+function flipAnimate(container, skipTag) {
+  const tags = [...container.querySelectorAll('.tag')];
+  const firstRects = new Map();
+  tags.forEach(t => firstRects.set(t, t.getBoundingClientRect()));
+  return function play() {
+    isAnimating = true;
+    let animCount = 0;
+    tags.forEach(t => {
+      if (t === skipTag) return;
+      const first = firstRects.get(t);
+      if (!first) return;
+      const last = t.getBoundingClientRect();
+      const dx = first.left - last.left;
+      const dy = first.top - last.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+      animCount++;
+      t.style.transition = 'none';
+      t.style.transform = `translate(${dx}px, ${dy}px)`;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          t.style.transition = 'transform 0.2s cubic-bezier(0.2, 0, 0, 1)';
+          t.style.transform = '';
+          t.addEventListener('transitionend', () => {
+            t.style.transition = '';
+            animCount--;
+            if (animCount <= 0) isAnimating = false;
+          }, { once: true });
+        });
+      });
+    });
+    if (animCount === 0) isAnimating = false;
+  };
+}
+
+function initDrag(tag) {
+  tag.draggable = true;
+  tag.addEventListener('dragstart', (e) => {
+    dragTag = tag;
+    setTimeout(() => tag.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  tag.addEventListener('dragend', () => {
+    tag.classList.remove('dragging');
+    dragTag = null;
+  });
+  tag.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    if (!dragTag || dragTag === tag || isAnimating) return;
+    const container = tag.closest('.tag-container');
+    if (dragTag.closest('.tag-container') !== container) return;
+    const tags = [...container.querySelectorAll('.tag')];
+    const dragIdx = tags.indexOf(dragTag);
+    const hoverIdx = tags.indexOf(tag);
+    if (dragIdx === hoverIdx) return;
+    const play = flipAnimate(container, dragTag);
+    if (dragIdx < hoverIdx) {
+      tag.after(dragTag);
+    } else {
+      tag.before(dragTag);
+    }
+    play();
+  });
+  tag.addEventListener('drop', (e) => {
+    e.preventDefault();
+  });
+}
+
+// Patch createTag to enable drag
+const _origCreateTag = createTag;
+createTag = function(container, name, gender) {
+  _origCreateTag(container, name, gender);
+  const input = container.querySelector('.tag-input');
+  const tag = input.previousElementSibling;
+  if (tag && tag.classList.contains('tag')) initDrag(tag);
+};
+
+// Initialize default tags
+['홍길동','김철수','박영수','이민호','정우성','송중기'].forEach(n => createTag(document.getElementById('maleTagContainer'), n, 'male'));
+['김영희','이수진','박지연','최유리','한소희','정소민'].forEach(n => createTag(document.getElementById('femaleTagContainer'), n, 'female'));
+
+function stepValue(id, delta) {
+  const input = document.getElementById(id);
+  const val = parseInt(input.value) + delta;
+  const min = parseInt(input.min);
+  const max = parseInt(input.max);
+  if (val >= min && val <= max) input.value = val;
+}
+
 function generateGames() {
   const errorEl = document.getElementById('errorMsg');
   const resultsEl = document.getElementById('results');
   errorEl.style.display = 'none';
   resultsEl.innerHTML = '';
 
-  const maleRaw = document.getElementById('maleNames').value.split(',').map(s => s.trim()).filter(Boolean);
-  const femaleRaw = document.getElementById('femaleNames').value.split(',').map(s => s.trim()).filter(Boolean);
+  const maleRaw = getTagNames('maleTagContainer');
+  const femaleRaw = getTagNames('femaleTagContainer');
   const courts = parseInt(document.getElementById('courtCount').value);
   const games = parseInt(document.getElementById('gameCount').value);
   const mixedStart = document.getElementById('mixedStart').value === '1';
 
-  // Parse priority (*이름 → 첫 게임 우선 배정)
-  const priorityNames = new Set();
-  const males = maleRaw.map(n => { if (n.startsWith('*')) { const name = n.slice(1); priorityNames.add(name); return name; } return n; });
-  const females = femaleRaw.map(n => { if (n.startsWith('*')) { const name = n.slice(1); priorityNames.add(name); return name; } return n; });
+  const males = [...maleRaw];
+  const females = [...femaleRaw];
 
   const totalPlayers = males.length + females.length;
   const playersPerRound = courts * 4;
@@ -356,10 +576,11 @@ function generateGames() {
   // Pick rest candidates for a given gender group and count
   function pickRestCandidates(group, count, roundIdx) {
     if (count <= 0) return [];
-    // Round 0 (game 1): priority players must not rest
-    const eligible = roundIdx === 0
-      ? group.filter(p => !priorityNames.has(p.name))
-      : group;
+    if (roundIdx === 0) {
+      // First game: tag order priority — rest players from the end of the list
+      return group.slice(group.length - count);
+    }
+    const eligible = group;
     // Shuffle first, then stable-sort by restCount so equal-rest players are randomized
     const canRest = shuffle(eligible.filter(p => lastRested[p.name] !== roundIdx - 1))
       .sort((a, b) => restCount[a.name] - restCount[b.name]);
@@ -383,8 +604,12 @@ function generateGames() {
     return vals.reduce((sum, v) => sum + (v - mean) ** 2, 0);
   }
 
-  function pickDiverseGroup(pool, count) {
+  function pickDiverseGroup(pool, count, roundIdx) {
     if (pool.length <= count) return [...pool];
+    if (roundIdx === 0) {
+      // First game: pick in tag order (front of pool)
+      return pool.slice(0, count);
+    }
     let bestGroup = pool.slice(0, count);
     let bestScore = getPairScore(bestGroup.map(p => p.name));
     const maxAttempts = Math.min(40, pool.length * 4);
@@ -486,13 +711,13 @@ function generateGames() {
       if (court.type === 'mixed') {
         const mPool = playingMales.filter(p => !usedPlayers.has(p.name));
         const fPool = playingFemales.filter(p => !usedPlayers.has(p.name));
-        const selected = pickDiverseGroup(mPool, 2).concat(pickDiverseGroup(fPool, 2));
+        const selected = pickDiverseGroup(mPool, 2, g).concat(pickDiverseGroup(fPool, 2, g));
         selected.forEach(p => usedPlayers.add(p.name));
         courtAssignments[court.idx] = { type: court.type, players: selected };
       } else {
         const pool = (court.type === 'mens' ? playingMales : playingFemales)
           .filter(p => !usedPlayers.has(p.name));
-        const selected = pickDiverseGroup(pool, 4);
+        const selected = pickDiverseGroup(pool, 4, g);
         selected.forEach(p => usedPlayers.add(p.name));
         courtAssignments[court.idx] = { type: court.type, players: selected };
       }
@@ -533,7 +758,7 @@ function generateGames() {
   window._lastResult = plainText.trim();
 
   // Render as styled text
-  let html = '<div class="text-result">';
+  let html = '<div class="section-title">게임 결과</div><div class="text-result">';
   for (const round of schedule) {
     html += `<div class="game-block">`;
     html += `<div class="game-label">게임 ${round.round}</div>`;
@@ -549,15 +774,17 @@ function generateGames() {
   html += '</div>';
 
   // Summary
-  html += `<div class="summary-card"><div class="summary-title">참가자 통계</div>`;
-  html += `<table class="stat-table"><tr><th style="text-align:left">이름</th><th>성별</th><th>출전</th><th>휴식</th></tr>`;
+  html += `<div class="section-title">참가자 통계</div>`;
+  html += `<div class="summary-card">`;
+  html += `<div class="stat-tags">`;
   allPlayers.forEach(p => {
-    html += `<tr><td>${p.name}</td>`;
-    html += `<td><span class="${p.gender === 'M' ? 'gender-m' : 'gender-f'}">${p.gender === 'M' ? '남' : '여'}</span></td>`;
-    html += `<td><span class="stat-pill play">${playCount[p.name]}</span></td>`;
-    html += `<td><span class="stat-pill rest-stat">${restCount[p.name]}</span></td></tr>`;
+    html += `<div class="stat-tag">${p.name}<span class="stat-badge play">${playCount[p.name]}</span>`;
+    if (restCount[p.name] > 0) {
+      html += `<span class="stat-badge rest">${restCount[p.name]}</span>`;
+    }
+    html += `</div>`;
   });
-  html += `</table></div>`;
+  html += `</div></div>`;
 
   resultsEl.innerHTML = html;
 
